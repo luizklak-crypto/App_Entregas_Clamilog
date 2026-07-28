@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#0f172a">
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --brand: #0f172a;
+      --brand-2: #26334d;
+      --accent: #16a34a;
+      --danger: #dc2626;
+      --danger-soft: #fff0f0;
+      --radius: 18px;
+      --shadow: 0 16px 42px rgba(15, 23, 42, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% -10%, #dce4ef 0, transparent 35%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-shell {
+      width: min(100%, 520px);
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-hero {
+      min-height: 290px;
+      color: #fff;
+      padding:
+        max(24px, env(safe-area-inset-top))
+        22px
+        74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 88% 6%, rgba(255,255,255,.17), transparent 32%),
+        radial-gradient(circle at 12% 100%, rgba(255,255,255,.08), transparent 30%),
+        linear-gradient(145deg, var(--brand), var(--brand-2));
+      border-radius: 0 0 34px 34px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .22);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.13);
+    }
+
+    .brand-mark svg {
+      width: 25px;
+      height: 25px;
+    }
+
+    .hero-copy h1 {
+      margin: 0;
+      font-size: clamp(30px, 8vw, 39px);
+      line-height: 1.04;
+      letter-spacing: -.045em;
+    }
+
+    .hero-copy p {
+      margin: 11px 0 0;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 350px;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 2;
+      width: calc(100% - 32px);
+      margin: -48px auto 0;
+      padding: 22px 18px 18px;
+      background: var(--surface);
+      border: 1px solid rgba(226,232,240,.85);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .login-card h2 {
+      margin: 0;
+      font-size: 21px;
+      letter-spacing: -.025em;
+    }
+
+    .login-card .subtitle {
+      margin: 5px 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .field {
+      margin-top: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin: 0 0 6px 2px;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .input-box {
+      position: relative;
+    }
+
+    .input-box input {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 48px 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      outline: none;
+      background: var(--surface-2);
+      color: var(--ink);
+      font-size: 16px;
+      transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+
+    .input-box input:focus {
+      background: #fff;
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 4px rgba(148,163,184,.13);
+    }
+
+    .input-icon,
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+    }
+
+    .input-icon {
+      pointer-events: none;
+      display: grid;
+      place-items: center;
+    }
+
+    .toggle-password {
+      border: 0;
+      background: transparent;
+      padding: 7px;
+      cursor: pointer;
+      border-radius: 9px;
+    }
+
+    .toggle-password:active {
+      background: #eef2f7;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 15px 2px 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .remember-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform .08s ease, opacity .15s ease;
+    }
+
+    .btn:active {
+      transform: scale(.988);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .btn-secondary {
+      margin-top: 12px;
+      background: #eef2f7;
+      color: var(--ink);
+    }
+
+    .message {
+      display: none;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 0 0 15px;
+      padding: 12px 13px;
+      border-radius: 13px;
+      color: #991b1b;
+      background: var(--danger-soft);
+      border: 1px solid #fecaca;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .message.show {
+      display: flex;
+    }
+
+    .footer-note {
+      margin: auto 0 0;
+      padding: 26px 20px max(22px, env(safe-area-inset-bottom));
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .loading-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-left: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse .9s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: .25; transform: scale(.8); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .welcome-card {
+      width: calc(100% - 32px);
+      margin: -48px auto 0;
+      padding: 24px 18px 18px;
+      position: relative;
+      z-index: 2;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .success-mark {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      color: #15803d;
+      background: #eaf8ef;
+      margin-bottom: 18px;
+    }
+
+    .welcome-card h2 {
+      margin: 0;
+      font-size: 23px;
+      letter-spacing: -.03em;
+    }
+
+    .welcome-card p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 19px;
+      padding: 13px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .user-pill small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .user-type {
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #2563eb;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        padding: 24px 0;
+      }
+
+      .app-shell {
+        min-height: calc(100vh - 48px);
+        overflow: hidden;
+        border-radius: 28px;
+        box-shadow: 0 24px 70px rgba(15,23,42,.16);
+      }
+
+      .login-hero {
+        border-radius: 0 0 34px 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="login-hero">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M3 7.5h11v8H3z" stroke="currentColor" stroke-width="1.8" />
+            <path d="M14 10h3.7l2.3 2.7v2.8h-6z" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="7" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="17.5" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+        </div>
+        <span>ClamiLog</span>
+      </div>
+
+      <div class="hero-copy">
+        <h1>Aplicativo<br>do motorista</h1>
+        <p>Acesse sua rota e registre cada atendimento de forma rápida pelo celular.</p>
+      </div>
+    </section>
+
+    <section id="loginCard" class="login-card">
+      <h2>Entrar</h2>
+      <p class="subtitle">Utilize o usuário e a senha fornecidos pela logística.</p>
+
+      <div id="errorMessage" class="message" role="alert">
+        <span aria-hidden="true">⚠</span>
+        <span id="errorText"></span>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="usuario">Usuário</label>
+          <div class="input-box">
+            <input
+              id="usuario"
+              name="usuario"
+              type="text"
+              inputmode="text"
+              autocomplete="username"
+              autocapitalize="words"
+              placeholder="Digite seu usuário"
+              maxlength="60"
+              required
+            >
+            <span class="input-icon" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M4.5 20c.8-4.1 3.2-6.2 7.5-6.2s6.7 2.1 7.5 6.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="senha">Senha</label>
+          <div class="input-box">
+            <input
+              id="senha"
+              name="senha"
+              type="password"
+              inputmode="numeric"
+              autocomplete="current-password"
+              placeholder="Digite sua senha"
+              maxlength="60"
+              required
+            >
+            <button
+              id="togglePassword"
+              class="toggle-password"
+              type="button"
+              aria-label="Mostrar senha"
+              title="Mostrar senha"
+            >
+              <svg id="eyeIcon" width="21" height="21" viewBox="0 0 24 24" fill="none">
+                <path d="M2.8 12s3.3-5.2 9.2-5.2S21.2 12 21.2 12 17.9 17.2 12 17.2 2.8 12 2.8 12Z" stroke="currentColor" stroke-width="1.7"/>
+                <circle cx="12" cy="12" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <label class="remember-row">
+          <input id="lembrarUsuario" type="checkbox">
+          <span>Lembrar meu usuário neste celular</span>
+        </label>
+
+        <button id="loginButton" class="btn" type="submit">
+          <span id="loginButtonText">Acessar minha rota</span>
+        </button>
+      </form>
+    </section>
+
+    <section id="welcomeCard" class="welcome-card hidden">
+      <div class="success-mark" aria-hidden="true">
+        <svg width="29" height="29" viewBox="0 0 24 24" fill="none">
+          <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h2>Olá, <span id="welcomeUser"></span>!</h2>
+      <p>Login realizado com sucesso. Na próxima etapa, esta tela abrirá automaticamente a sua rota do dia.</p>
+
+      <div class="user-pill">
+        <div>
+          <small>Perfil conectado</small>
+          <strong id="connectedUser"></strong>
+        </div>
+        <span id="connectedType" class="user-type"></span>
+      </div>
+
+      <button id="logoutButton" class="btn btn-secondary" type="button">
+        Sair
+      </button>
+    </section>
+
+    <footer class="footer-note">
+      Uso interno Clami/Dpot · ClamiLog
+    </footer>
+  </main>
+
+  <script>
+    const DOM = {
+      loginCard: document.getElementById('loginCard'),
+      welcomeCard: document.getElementById('welcomeCard'),
+      loginForm: document.getElementById('loginForm'),
+      usuario: document.getElementById('usuario'),
+      senha: document.getElementById('senha'),
+      lembrarUsuario: document.getElementById('lembrarUsuario'),
+      loginButton: document.getElementById('loginButton'),
+      loginButtonText: document.getElementById('loginButtonText'),
+      togglePassword: document.getElementById('togglePassword'),
+      errorMessage: document.getElementById('errorMessage'),
+      errorText: document.getElementById('errorText'),
+      welcomeUser: document.getElementById('welcomeUser'),
+      connectedUser: document.getElementById('connectedUser'),
+      connectedType: document.getElementById('connectedType'),
+      logoutButton: document.getElementById('logoutButton')
+    };
+
+    document.addEventListener('DOMContentLoaded', iniciar);
+
+    function iniciar() {
+      restaurarUsuarioLembrado();
+      configurarEventos();
+      tentarRestaurarSessao();
+    }
+
+    function configurarEventos() {
+      DOM.loginForm.addEventListener('submit', enviarLogin);
+      DOM.togglePassword.addEventListener('click', alternarSenha);
+      DOM.logoutButton.addEventListener('click', encerrarSessao);
+      DOM.usuario.addEventListener('input', esconderErro);
+      DOM.senha.addEventListener('input', esconderErro);
+    }
+
+    function enviarLogin(evento) {
+      evento.preventDefault();
+      esconderErro();
+
+      const usuario = DOM.usuario.value.trim();
+      const senha = DOM.senha.value;
+
+      if (!usuario || !senha) {
+        mostrarErro('Preencha o usuário e a senha.');
+        return;
+      }
+
+      definirCarregando(true);
+
+      google.script.run
+        .withSuccessHandler(tratarRespostaLogin)
+        .withFailureHandler(() => {
+          definirCarregando(false);
+          mostrarErro('Falha de comunicação. Verifique sua internet e tente novamente.');
+        })
+        .validarLogin(usuario, senha);
+    }
+
+    function tratarRespostaLogin(resposta) {
+      definirCarregando(false);
+
+      if (!resposta || !resposta.ok) {
+        mostrarErro(resposta?.mensagem || 'Usuário ou senha incorretos.');
+        DOM.senha.value = '';
+        DOM.senha.focus();
+        return;
+      }
+
+      salvarPreferencias(resposta);
+      abrirAreaLogada(resposta);
+    }
+
+    function tentarRestaurarSessao() {
+      const token = sessionStorage.getItem('clamilog_token');
+      if (!token) return;
+
+      google.script.run
+        .withSuccessHandler(resposta => {
+          if (resposta?.ok) {
+            abrirAreaLogada(resposta);
+          } else {
+            sessionStorage.removeItem('clamilog_token');
+          }
+        })
+        .withFailureHandler(() => {
+          sessionStorage.removeItem('clamilog_token');
+        })
+        .validarSessao(token);
+    }
+
+    function abrirAreaLogada(dados) {
+      DOM.welcomeUser.textContent = dados.usuario;
+      DOM.connectedUser.textContent = dados.usuario;
+      DOM.connectedType.textContent = dados.tipo;
+      DOM.loginCard.classList.add('hidden');
+      DOM.welcomeCard.classList.remove('hidden');
+    }
+
+    function encerrarSessao() {
+      const token = sessionStorage.getItem('clamilog_token');
+
+      sessionStorage.removeItem('clamilog_token');
+      DOM.senha.value = '';
+      DOM.welcomeCard.classList.add('hidden');
+      DOM.loginCard.classList.remove('hidden');
+      DOM.usuario.focus();
+
+      if (token) {
+        google.script.run.sair(token);
+      }
+    }
+
+    function salvarPreferencias(resposta) {
+      sessionStorage.setItem('clamilog_token', resposta.token);
+
+      if (DOM.lembrarUsuario.checked) {
+        localStorage.setItem('clamilog_usuario', resposta.usuario);
+      } else {
+        localStorage.removeItem('clamilog_usuario');
+      }
+    }
+
+    function restaurarUsuarioLembrado() {
+      const usuario = localStorage.getItem('clamilog_usuario');
+
+      if (usuario) {
+        DOM.usuario.value = usuario;
+        DOM.lembrarUsuario.checked = true;
+        DOM.senha.focus();
+      }
+    }
+
+    function alternarSenha() {
+      const mostrar = DOM.senha.type === 'password';
+      DOM.senha.type = mostrar ? 'text' : 'password';
+      DOM.togglePassword.setAttribute(
+        'aria-label',
+        mostrar ? 'Ocultar senha' : 'Mostrar senha'
+      );
+      DOM.togglePassword.title = mostrar ? 'Ocultar senha' : 'Mostrar senha';
+    }
+
+    function definirCarregando(carregando) {
+      DOM.loginButton.disabled = carregando;
+      DOM.usuario.disabled = carregando;
+      DOM.senha.disabled = carregando;
+
+      DOM.loginButtonText.innerHTML = carregando
+        ? 'Validando acesso <span class="loading-dot"></span>'
+        : 'Acessar minha rota';
+    }
+
+    function mostrarErro(texto) {
+      DOM.errorText.textContent = texto;
+      DOM.errorMessage.classList.add('show');
+    }
+
+    function esconderErro() {
+      DOM.errorMessage.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
