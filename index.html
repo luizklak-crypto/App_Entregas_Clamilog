@@ -1,0 +1,5924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  >
+  <meta name="theme-color" content="#15213a">
+  <title>ClamiLog | Motorista</title>
+
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --surface: #ffffff;
+      --surface-2: #f7f9fc;
+      --ink: #162036;
+      --muted: #64748b;
+      --line: #dbe2ec;
+      --brand: #15213a;
+      --brand-2: #24314c;
+      --accent: #2563eb;
+      --danger: #b42318;
+      --danger-bg: #fff1f0;
+      --success: #15803d;
+      --success-bg: #ecfdf3;
+      --warning: #b45309;
+      --warning-bg: #fff7ed;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+      width: min(100%, 460px);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #f4f6f9;
+      box-shadow: 0 0 40px rgba(15, 23, 42, .08);
+    }
+
+    .hero {
+      min-height: 230px;
+      margin: 15px 36px 0;
+      padding: 18px 17px 62px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 4%, rgba(255,255,255,.08), transparent 29%),
+        linear-gradient(145deg, var(--brand), var(--brand-2));
+      border-radius: 22px 22px 28px 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.13);
+    }
+
+    .brand-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .hero h1 {
+      margin: 19px 0 7px;
+      font-size: 29px;
+      line-height: 1.03;
+      letter-spacing: -.04em;
+    }
+
+    .hero p {
+      max-width: 305px;
+      margin: 0;
+      color: #e1e8f4;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: calc(100% - 100px);
+      margin: -48px auto 0;
+      padding: 20px 15px 15px;
+      background: var(--surface);
+      border: 1px solid rgba(219, 226, 236, .9);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .09);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -.03em;
+    }
+
+    .subtitle {
+      margin: 6px 0 15px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 13px;
+      padding: 11px 12px;
+      border-radius: 11px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid #ffd0cc;
+    }
+
+    .field {
+      margin-top: 13px;
+    }
+
+    .field label {
+      display: block;
+      margin: 0 0 6px 2px;
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 43px 10px 12px;
+      color: var(--ink);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      outline: none;
+      font-size: 12px;
+      transition: .15s ease;
+    }
+
+    .input-wrap input:focus {
+      background: #fff;
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, .14);
+    }
+
+    .input-icon,
+    .eye-button {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      color: #71819a;
+    }
+
+    .input-icon {
+      pointer-events: none;
+    }
+
+    .eye-button {
+      display: grid;
+      place-items: center;
+      padding: 5px;
+      border: 0;
+      background: transparent;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 13px 2px 17px;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .remember input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--brand);
+    }
+
+    .primary-button {
+      width: 100%;
+      min-height: 42px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      background: var(--brand);
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .primary-button:disabled {
+      opacity: .56;
+      cursor: wait;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      margin-left: 7px;
+      vertical-align: -2px;
+      border: 2px solid rgba(255,255,255,.38);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: girar .8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Tela da rota */
+
+    .route-screen {
+      min-height: 100vh;
+      padding-bottom: 28px;
+    }
+
+    .route-header {
+      padding:
+        max(18px, env(safe-area-inset-top))
+        18px
+        28px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 5%, rgba(255,255,255,.1), transparent 31%),
+        linear-gradient(145deg, var(--brand), var(--brand-2));
+      border-radius: 0 0 28px 28px;
+    }
+
+    .route-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .route-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .logout-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      cursor: pointer;
+    }
+
+    .route-greeting {
+      margin-top: 23px;
+    }
+
+    .route-greeting small {
+      display: block;
+      margin-bottom: 4px;
+      color: #bdc8da;
+      font-size: 11px;
+    }
+
+    .route-greeting h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+
+    .route-date {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 9px;
+      color: #dde5f1;
+      font-size: 11px;
+    }
+
+    .refresh-route-wrap {
+      padding: 16px 18px 0;
+      background: var(--surface);
+    }
+
+    .refresh-route-button {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid rgba(24, 92, 67, 0.22);
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--primary);
+      font-size: 17px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(25, 58, 47, 0.08);
+    }
+
+    .refresh-route-button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .refresh-route-message {
+      min-height: 20px;
+      margin: 7px 2px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .route-content {
+      width: calc(100% - 30px);
+      margin: -15px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .route-summary {
+      padding: 15px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, .1);
+    }
+
+    .route-summary-main {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .vehicle-label {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .vehicle-value {
+      display: block;
+      margin-top: 3px;
+      font-size: 18px;
+      letter-spacing: -.03em;
+    }
+
+    .route-status {
+      padding: 6px 9px;
+      color: var(--success);
+      background: var(--success-bg);
+      border-radius: 999px;
+      font-size: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .helpers {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .summary-item {
+      padding: 10px 7px;
+      text-align: center;
+      background: var(--surface-2);
+      border: 1px solid #edf1f6;
+      border-radius: 11px;
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -.03em;
+    }
+
+    .summary-item span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+
+    .start-route-card,
+    .started-route-card {
+      margin-top: 12px;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, .075);
+    }
+
+    .start-route-card {
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 10%, rgba(255,255,255,.13), transparent 32%),
+        linear-gradient(145deg, #1d4ed8, #183b78);
+    }
+
+    .start-route-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .start-route-icon {
+      width: 39px;
+      height: 39px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .start-route-copy {
+      flex: 1;
+    }
+
+    .start-route-copy h2 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: -.025em;
+    }
+
+    .start-route-copy p {
+      margin: 5px 0 0;
+      color: #dce9ff;
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .start-route-button {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 13px;
+      border: 0;
+      border-radius: 11px;
+      color: #183b78;
+      background: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .started-route-card {
+      background: var(--success-bg);
+      border: 1px solid #bbf7d0;
+    }
+
+    .started-route-main {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .started-route-icon {
+      width: 39px;
+      height: 39px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      color: var(--success);
+      background: #dcfce7;
+      border-radius: 12px;
+    }
+
+    .started-route-copy {
+      flex: 1;
+    }
+
+    .started-route-copy small {
+      display: block;
+      color: #166534;
+      font-size: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .started-route-copy strong {
+      display: block;
+      margin-top: 3px;
+      color: #14532d;
+      font-size: 13px;
+    }
+
+    .started-route-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 11px;
+    }
+
+    .started-route-meta span {
+      padding: 6px 8px;
+      color: #166534;
+      background: rgba(255,255,255,.72);
+      border: 1px solid #bbf7d0;
+      border-radius: 999px;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .whatsapp-share-button {
+      width: 100%;
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 13px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      background: #128c4a;
+      box-shadow: 0 8px 18px rgba(18, 140, 74, .2);
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .whatsapp-share-button:active {
+      transform: translateY(1px);
+    }
+
+    .whatsapp-share-note {
+      display: block;
+      margin-top: 8px;
+      color: #166534;
+      text-align: center;
+      font-size: 8px;
+      line-height: 1.4;
+    }
+
+    .delivery-operation-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(15, 23, 42, .54);
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-panel {
+      width: min(100%, 430px);
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+      padding: 19px 16px max(16px, env(safe-area-inset-bottom));
+      background: var(--surface);
+      border-radius: 21px;
+      box-shadow: 0 22px 60px rgba(15,23,42,.28);
+      animation: subirModal .2s ease-out;
+    }
+
+    @keyframes subirModal {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-handle {
+      width: 42px;
+      height: 4px;
+      margin: -4px auto 15px;
+      border-radius: 999px;
+      background: #d7dde7;
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title-row h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -.03em;
+    }
+
+    .modal-title-row p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: var(--surface-2);
+      cursor: pointer;
+    }
+
+    .modal-route-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .modal-info-item {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--surface-2);
+    }
+
+    .modal-info-item small {
+      display: block;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .modal-info-item strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .start-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .start-field label {
+      display: block;
+      margin: 0 0 6px 2px;
+      color: #475569;
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .start-field input {
+      width: 100%;
+      min-height: 45px;
+      padding: 10px 11px;
+      color: var(--ink);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      outline: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .start-field input:focus {
+      background: #fff;
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148,163,184,.14);
+    }
+
+    .location-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 13px;
+      padding: 11px;
+      color: #1e40af;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 11px;
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .modal-message {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 11px;
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .modal-message.show {
+      display: block;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: .8fr 1.4fr;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .modal-button {
+      min-height: 43px;
+      border: 0;
+      border-radius: 11px;
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .modal-button.secondary {
+      color: var(--ink);
+      background: #e9edf3;
+    }
+
+    .modal-button.primary {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .modal-button:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .delivery-modal-summary {
+      margin-top: 15px;
+      padding: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .delivery-modal-summary strong {
+      display: block;
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .delivery-modal-summary span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.4;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 3px 10px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -.03em;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .delivery-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .delivery-card {
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .055);
+    }
+
+    .delivery-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .sequence {
+      min-width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .delivery-title {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .delivery-title h3 {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.25;
+      letter-spacing: -.015em;
+    }
+
+    .delivery-place {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .quantity-badge {
+      flex: none;
+      padding: 6px 8px;
+      color: var(--accent);
+      background: #eff6ff;
+      border-radius: 999px;
+      font-size: 8px;
+      font-weight: 900;
+    }
+
+    .delivery-details {
+      display: grid;
+      gap: 7px;
+      margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid #edf1f5;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 9px;
+      line-height: 1.4;
+    }
+
+    .detail-row span {
+      color: var(--muted);
+    }
+
+    .detail-row strong {
+      overflow-wrap: anywhere;
+      font-weight: 800;
+    }
+
+    .attention {
+      margin-top: 10px;
+      padding: 8px 9px;
+      color: var(--warning);
+      background: var(--warning-bg);
+      border: 1px solid #fed7aa;
+      border-radius: 9px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .delivery-status-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 11px;
+      padding: 8px 9px;
+      border-radius: 9px;
+      font-size: 8px;
+      line-height: 1.35;
+    }
+
+    .delivery-status-box.waiting {
+      color: #475569;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .delivery-status-box.active {
+      color: #92400e;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+    }
+
+    .delivery-status-box.done {
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
+
+    .delivery-status-box.failed {
+      color: #991b1b;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+    }
+
+    .delivery-status-box strong {
+      font-size: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
+    .delivery-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .delivery-operation-button {
+      min-height: 40px;
+      padding: 8px 6px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .delivery-operation-button.arrival {
+      background: #1d4ed8;
+      box-shadow: 0 7px 15px rgba(29, 78, 216, .16);
+    }
+
+    .delivery-operation-button.finish {
+      background: #15803d;
+      box-shadow: 0 7px 15px rgba(21, 128, 61, .16);
+    }
+
+    .empty-state {
+      padding: 30px 20px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .empty-icon {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 12px;
+      color: var(--muted);
+      background: var(--surface-2);
+      border-radius: 17px;
+    }
+
+    .empty-state h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .empty-state p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .loading-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .loading-card {
+      width: 100%;
+      padding: 28px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(15,23,42,.08);
+    }
+
+    .loading-ring {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 13px;
+      border: 4px solid #dce3ed;
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: girar .8s linear infinite;
+    }
+
+    .loading-card strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .loading-card span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .footer {
+      padding: 23px 15px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 9px;
+    }
+
+    @media (max-width: 390px) {
+      .hero {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+
+      .card {
+        width: calc(100% - 30px);
+      }
+    }
+
+
+    .delivery-checklist {
+      margin-top: 16px;
+      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .checklist-heading {
+      margin-bottom: 13px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .checklist-question + .checklist-question {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+    }
+
+    .checklist-question > strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .checklist-question > small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .checklist-choice-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .checklist-choice {
+      min-height: 48px;
+      border: 2px solid #cbd5e1;
+      border-radius: 11px;
+      color: #334155;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .checklist-choice.selected[data-value="Sim"] {
+      color: #166534;
+      background: #dcfce7;
+      border-color: #22c55e;
+    }
+
+    .checklist-choice.selected[data-value="Não"] {
+      color: #991b1b;
+      background: #fee2e2;
+      border-color: #ef4444;
+    }
+
+    .completed-delivery-questions {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+    }
+
+    .non-delivery-reason-wrap {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+    }
+
+    .non-delivery-reason-wrap > strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .non-delivery-reason-wrap > small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .delivery-reason-table {
+      margin-top: 10px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 11px;
+    }
+
+    .delivery-reason-table-header {
+      padding: 9px 11px;
+      color: #475569;
+      background: #e2e8f0;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
+    .delivery-reason-list {
+      display: grid;
+    }
+
+    .delivery-reason-option {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px;
+      color: #334155;
+      background: #fff;
+      border: 0;
+      border-top: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+      cursor: pointer;
+    }
+
+    .delivery-reason-option:first-child {
+      border-top: 0;
+    }
+
+    .delivery-reason-option.selected {
+      color: #991b1b;
+      background: #fee2e2;
+      box-shadow: inset 4px 0 0 #ef4444;
+    }
+
+    .delivery-reason-empty {
+      padding: 13px 11px;
+      color: #991b1b;
+      background: #fff7f7;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .driver-description-wrap {
+      margin-top: 13px;
+    }
+
+    .driver-description-wrap label {
+      display: block;
+      margin-bottom: 7px;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .driver-description {
+      width: 100%;
+      min-height: 108px;
+      resize: vertical;
+      padding: 12px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      outline: none;
+      font: inherit;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .driver-description:focus {
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, .14);
+    }
+
+    .description-counter {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      text-align: right;
+      font-size: 10px;
+    }
+
+
+    .fuel-card {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #dbe4ee;
+      border-radius: 15px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .055);
+    }
+
+    .fuel-card.show {
+      display: block;
+    }
+
+    .fuel-card.pending {
+      border-color: #facc15;
+      background: #fffdf2;
+    }
+
+    .fuel-card.done {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .fuel-card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .fuel-card-icon {
+      width: 42px;
+      height: 42px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 22px;
+      background: #fef3c7;
+    }
+
+    .fuel-card.done .fuel-card-icon {
+      background: #dcfce7;
+    }
+
+    .fuel-card-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fuel-card-copy small {
+      display: block;
+      color: #92400e;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .fuel-card.done .fuel-card-copy small {
+      color: #166534;
+    }
+
+    .fuel-card-copy strong {
+      display: block;
+      margin-top: 3px;
+      color: #1e293b;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .fuel-card-copy span {
+      display: block;
+      margin-top: 5px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .fuel-card-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .fuel-card-meta div {
+      padding: 9px 10px;
+      background: rgba(255, 255, 255, .8);
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+
+    .fuel-card-meta small {
+      display: block;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .fuel-card-meta strong {
+      display: block;
+      margin-top: 3px;
+      color: #1e293b;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .fuel-card-button {
+      width: 100%;
+      min-height: 49px;
+      margin-top: 13px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      background: #b45309;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .fuel-card-button:disabled {
+      color: #166534;
+      background: #dcfce7;
+      cursor: default;
+    }
+
+    .final-route-card {
+      margin-top: 18px;
+      padding: 17px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 15px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .05);
+    }
+
+    .final-route-card.ready {
+      background: #eff6ff;
+      border-color: #60a5fa;
+    }
+
+    .final-route-card.done {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .final-route-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .final-route-icon {
+      width: 42px;
+      height: 42px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #e2e8f0;
+      font-size: 21px;
+    }
+
+    .final-route-card.ready .final-route-icon {
+      background: #dbeafe;
+    }
+
+    .final-route-card.done .final-route-icon {
+      background: #dcfce7;
+    }
+
+    .final-route-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .final-route-copy small {
+      display: block;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .final-route-card.ready .final-route-copy small {
+      color: #1d4ed8;
+    }
+
+    .final-route-card.done .final-route-copy small {
+      color: #166534;
+    }
+
+    .final-route-copy strong {
+      display: block;
+      margin-top: 3px;
+      color: #1e293b;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .final-route-copy span {
+      display: block;
+      margin-top: 5px;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .final-route-meta {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .final-route-card.done .final-route-meta {
+      display: grid;
+    }
+
+    .final-route-meta div {
+      padding: 9px 10px;
+      background: rgba(255, 255, 255, .8);
+      border: 1px solid #dcfce7;
+      border-radius: 10px;
+    }
+
+    .final-route-meta small {
+      display: block;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .final-route-meta strong {
+      display: block;
+      margin-top: 3px;
+      color: #1e293b;
+      font-size: 14px;
+    }
+
+    .final-route-button {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 12px;
+      color: #fff;
+      background: #2563eb;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .final-route-button:disabled {
+      color: #64748b;
+      background: #e2e8f0;
+      cursor: default;
+    }
+
+    .final-route-card.done .final-route-button:disabled {
+      color: #166534;
+      background: #dcfce7;
+    }
+
+    .fuel-decision-copy {
+      margin-top: 16px;
+      padding: 14px;
+      color: #1e293b;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 13px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .fuel-decision-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .fuel-decision-button {
+      min-height: 54px;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      background: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .fuel-decision-button.yes {
+      color: #166534;
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .fuel-decision-button.no {
+      color: #475569;
+      background: #f8fafc;
+    }
+
+    .fuel-decision-button.selected {
+      border-width: 3px;
+      box-shadow: 0 0 0 4px rgba(15, 23, 42, .08);
+      transform: translateY(-1px);
+    }
+
+    .fuel-decision-button.yes.selected {
+      color: #14532d;
+      border-color: #16a34a;
+      background: #dcfce7;
+    }
+
+    .fuel-decision-button.no.selected {
+      color: #1e293b;
+      border-color: #64748b;
+      background: #e2e8f0;
+    }
+
+    .start-fuel-question {
+      margin-top: 2px;
+      margin-bottom: 16px;
+    }
+
+    .start-fuel-question .fuel-decision-copy {
+      margin-top: 0;
+      font-size: 15px;
+    }
+
+    .fuel-decision-button:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .fuel-modal-summary {
+      margin-top: 15px;
+      padding: 12px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+    }
+
+    .fuel-modal-summary strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .fuel-modal-summary span {
+      display: block;
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    /* Melhor legibilidade para os motoristas */
+    .brand {
+      font-size: 17px;
+    }
+
+    .hero p {
+      font-size: 13px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+    }
+
+    .subtitle,
+    .message {
+      font-size: 13px;
+    }
+
+    .field label {
+      font-size: 12px;
+    }
+
+    .input-wrap input {
+      min-height: 48px;
+      font-size: 16px;
+    }
+
+    .remember {
+      font-size: 12px;
+    }
+
+    .primary-button {
+      min-height: 49px;
+      font-size: 14px;
+    }
+
+    .route-brand {
+      font-size: 16px;
+    }
+
+    .route-greeting small {
+      font-size: 13px;
+    }
+
+    .route-greeting h1 {
+      font-size: 31px;
+    }
+
+    .route-date {
+      font-size: 13px;
+    }
+
+    .vehicle-label {
+      font-size: 11px;
+    }
+
+    .vehicle-value {
+      font-size: 21px;
+    }
+
+    .route-status {
+      font-size: 10px;
+    }
+
+    .helpers {
+      font-size: 12px;
+    }
+
+    .summary-item strong {
+      font-size: 20px;
+    }
+
+    .summary-item span {
+      font-size: 10px;
+    }
+
+    .start-route-copy h2 {
+      font-size: 18px;
+    }
+
+    .start-route-copy p {
+      font-size: 12px;
+    }
+
+    .start-route-button {
+      min-height: 49px;
+      font-size: 14px;
+    }
+
+    .started-route-copy small {
+      font-size: 10px;
+    }
+
+    .started-route-copy strong {
+      font-size: 15px;
+    }
+
+    .started-route-meta span {
+      font-size: 11px;
+    }
+
+    .whatsapp-share-button {
+      min-height: 49px;
+      font-size: 13px;
+    }
+
+    .whatsapp-share-note {
+      font-size: 10px;
+    }
+
+    .section-heading h2 {
+      font-size: 18px;
+    }
+
+    .section-heading span {
+      font-size: 11px;
+    }
+
+    .delivery-card {
+      padding: 16px;
+    }
+
+    .sequence {
+      min-width: 36px;
+      height: 36px;
+      font-size: 13px;
+    }
+
+    .delivery-title h3 {
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .delivery-place {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .quantity-badge {
+      font-size: 10px;
+    }
+
+    .detail-row {
+      grid-template-columns: 78px 1fr;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .attention {
+      font-size: 12px;
+    }
+
+    .delivery-status-box {
+      font-size: 11px;
+    }
+
+    .delivery-status-box strong {
+      font-size: 10px;
+    }
+
+    .delivery-operation-button {
+      min-height: 49px;
+      padding: 10px 7px;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .modal-title-row h2 {
+      font-size: 21px;
+    }
+
+    .modal-title-row p {
+      font-size: 12px;
+    }
+
+    .modal-info-item small {
+      font-size: 11px;
+    }
+
+    .modal-info-item strong {
+      font-size: 14px;
+    }
+
+    .start-field label {
+      font-size: 12px;
+    }
+
+    .start-field input {
+      min-height: 50px;
+      font-size: 17px;
+    }
+
+    .location-notice,
+    .modal-message {
+      font-size: 12px;
+    }
+
+    .modal-button {
+      min-height: 50px;
+      font-size: 14px;
+    }
+
+    .delivery-modal-summary strong {
+      font-size: 15px;
+    }
+
+    .delivery-modal-summary span {
+      font-size: 12px;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+    }
+
+    @media (max-width: 370px) {
+      .delivery-operation-button {
+        font-size: 12px;
+      }
+
+      .delivery-title h3 {
+        font-size: 15px;
+      }
+
+      .detail-row {
+        grid-template-columns: 72px 1fr;
+      }
+    }
+
+  
+
+    .delivery-extra-info {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff7e6;
+      border: 1px solid #f2d49a;
+      font-size: 14px;
+      font-weight: 800;
+      color: #6b4300;
+    }
+
+    .delivery-observation {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff1f1;
+      border: 2px solid #d93025;
+      color: #a5140c;
+      font-size: 15px;
+      font-weight: 900;
+      animation: clamilogBlink 1.1s steps(2, start) infinite;
+    }
+
+    @keyframes clamilogBlink {
+      50% { opacity: .35; }
+    }
+
+    .lunch-card {
+      display: none;
+      margin: 16px 0;
+      padding: 16px;
+      border: 1px solid #d6dee9;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(25, 45, 80, .06);
+    }
+    .lunch-card.show { display: block; }
+    .lunch-card.done { border-color: #8bc9a5; background: #f3fff7; }
+    .lunch-card h3 { margin: 0 0 6px; font-size: 18px; }
+    .lunch-card p { margin: 0 0 14px; color: #61708a; }
+    .lunch-card button {
+      width: 100%; min-height: 50px; border: 0; border-radius: 12px;
+      font-size: 16px; font-weight: 800; background: #f4a62a; color: #17233c;
+    }
+    .lunch-card button:disabled { background: #9bc8aa; color: #fff; }
+
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <!-- LOGIN -->
+    <section id="loginScreen">
+      <section class="hero">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 7.5h11v8H3z" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M14 10h3.7l2.3 2.7v2.8h-6z" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="7" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="17.5" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </span>
+          <span>ClamiLog</span>
+        </div>
+
+        <h1>Aplicativo<br>do motorista</h1>
+        <p>Acesse sua rota e registre cada atendimento de forma rápida pelo celular.</p>
+      </section>
+
+      <section class="card">
+        <h2>Entrar</h2>
+        <p class="subtitle">Utilize o usuário e a senha fornecidos pela logística.</p>
+
+        <div id="message" class="message" role="alert"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="usuario">Usuário</label>
+            <div class="input-wrap">
+              <input
+                id="usuario"
+                type="text"
+                autocomplete="username"
+                autocapitalize="words"
+                placeholder="Digite seu usuário"
+                maxlength="60"
+                required
+              >
+              <span class="input-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/>
+                  <path d="M4.5 20c.8-4.1 3.2-6.2 7.5-6.2s6.7 2.1 7.5 6.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="senha">Senha</label>
+            <div class="input-wrap">
+              <input
+                id="senha"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Digite sua senha"
+                maxlength="60"
+                required
+              >
+              <button id="eyeButton" class="eye-button" type="button" aria-label="Mostrar senha">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                  <path d="M2.8 12s3.3-5.2 9.2-5.2S21.2 12 21.2 12 17.9 17.2 12 17.2 2.8 12 2.8 12Z" stroke="currentColor" stroke-width="1.7"/>
+                  <circle cx="12" cy="12" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <label class="remember">
+            <input id="lembrar" type="checkbox">
+            <span>Lembrar meu usuário neste celular</span>
+          </label>
+
+          <button id="loginButton" class="primary-button" type="submit">
+            <span id="loginButtonText">Acessar minha rota</span>
+          </button>
+        </form>
+      </section>
+
+      <footer class="footer">Uso interno Clami/Dpot · ClamiLog</footer>
+    </section>
+
+    <!-- CARREGAMENTO -->
+    <section id="loadingScreen" class="loading-screen hidden">
+      <div class="loading-card">
+        <div class="loading-ring"></div>
+        <strong>Carregando sua rota</strong>
+        <span>Consultando as entregas programadas para hoje.</span>
+      </div>
+    </section>
+
+    <!-- ROTA -->
+    <section id="routeScreen" class="route-screen hidden">
+      <header class="route-header">
+        <div class="route-topline">
+          <div class="route-brand">
+            <span class="brand-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3 7.5h11v8H3z" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M14 10h3.7l2.3 2.7v2.8h-6z" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="7" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="17.5" cy="17.5" r="1.7" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span>ClamiLog</span>
+          </div>
+
+          <button id="logoutButton" class="logout-icon" type="button" aria-label="Sair">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M10 5H5v14h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M14 8l4 4-4 4M18 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="route-greeting">
+          <small>Olá, <span id="routeUser"></span></small>
+          <h1>Suas entregas<br>de hoje</h1>
+          <div class="route-date">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M7 3v4M17 3v4M3 10h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            <span id="routeDate"></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="refresh-route-wrap">
+        <button id="refreshRouteButton" class="refresh-route-button" type="button">
+          <span aria-hidden="true">🔄</span>
+          <span id="refreshRouteButtonText">Atualizar roteiro</span>
+        </button>
+        <div id="refreshRouteMessage" class="refresh-route-message" aria-live="polite"></div>
+      </div>
+
+      <div class="route-content">
+        <section id="routeSummary" class="route-summary">
+          <div class="route-summary-main">
+            <div>
+              <span class="vehicle-label">Veículo</span>
+              <strong id="routeVehicle" class="vehicle-value"></strong>
+            </div>
+            <span id="routeStatus" class="route-status">Programada</span>
+          </div>
+
+          <div id="routeHelpers" class="helpers"></div>
+
+          <div class="summary-grid">
+            <div class="summary-item">
+              <strong id="summaryStops">0</strong>
+              <span>Paradas</span>
+            </div>
+            <div class="summary-item">
+              <strong id="summaryOrders">0</strong>
+              <span>Pedidos</span>
+            </div>
+            <div class="summary-item">
+              <strong id="summaryItems">0</strong>
+              <span>Volumes</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="startRouteCard" class="start-route-card hidden">
+          <div class="start-route-head">
+            <div class="start-route-icon" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+                <path d="M5 16.5V7.8A2.8 2.8 0 0 1 7.8 5h8.4A2.8 2.8 0 0 1 19 7.8v8.7" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="8" cy="17.5" r="1.8" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="16" cy="17.5" r="1.8" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 11h10M9 8h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="start-route-copy">
+              <h2>Iniciar percurso</h2>
+              <p>
+                Informe a hora, o KM inicial, confirme o abastecimento e permita a localização.
+              </p>
+            </div>
+          </div>
+
+          <button id="startRouteButton" class="start-route-button" type="button">
+            Informar KM e iniciar
+          </button>
+        </section>
+
+        <section id="startedRouteCard" class="started-route-card hidden">
+          <div class="started-route-main">
+            <div class="started-route-icon" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+                <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="started-route-copy">
+              <small>Percurso iniciado</small>
+              <strong id="startedRouteTitle"></strong>
+            </div>
+          </div>
+
+          <div class="started-route-meta">
+            <span id="startedRouteTime"></span>
+            <span id="startedRouteKm"></span>
+            <span id="startedRouteLocation"></span>
+          </div>
+
+          <button
+            id="whatsappShareButton"
+            class="whatsapp-share-button"
+            type="button"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.3 11.7a8.3 8.3 0 0 1-12.2 7.4L4 20l1-3.9a8.3 8.3 0 1 1 15.3-4.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9 8.3c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .5.4l.8 1.8c.1.3.1.5-.1.7l-.6.7c-.2.2-.1.4 0 .6.5.9 1.3 1.7 2.2 2.2.2.1.4.2.6 0l.8-1c.2-.2.4-.3.7-.2l1.8.9c.3.1.4.3.4.5 0 .3-.2 1.2-.8 1.7-.5.5-1.2.8-2 .7-1-.1-2.5-.6-4.2-2.1-1.4-1.3-2.4-2.8-2.7-3.8-.3-.9 0-1.9.4-2.6Z" fill="currentColor"/>
+            </svg>
+            <span>Enviar resumo no WhatsApp</span>
+          </button>
+
+          <span class="whatsapp-share-note">
+            Confira a mensagem e confirme o envio no WhatsApp.
+          </span>
+        </section>
+
+        <section id="fuelCard" class="fuel-card">
+          <div class="fuel-card-head">
+            <div id="fuelCardIcon" class="fuel-card-icon" aria-hidden="true">⛽</div>
+            <div class="fuel-card-copy">
+              <small id="fuelCardStatus">Abastecimento previsto</small>
+              <strong id="fuelCardTitle">Aguardando abastecimento</strong>
+              <span id="fuelCardDescription"></span>
+            </div>
+          </div>
+
+          <div class="fuel-card-meta">
+            <div>
+              <small>Veículo</small>
+              <strong id="fuelCardVehicle"></strong>
+            </div>
+            <div>
+              <small>Motorista</small>
+              <strong id="fuelCardDriver"></strong>
+            </div>
+          </div>
+
+          <button id="fuelCardButton" class="fuel-card-button" type="button">
+            Registrar abastecimento
+          </button>
+        </section>
+
+        <section id="lunchCard" class="lunch-card">
+          <h3 id="lunchCardTitle">🍽️ Parada para almoço</h3>
+          <p id="lunchCardDescription">Registre os horários, o KM e a localização.</p>
+          <button id="lunchCardButton" type="button">Registrar almoço</button>
+        </section>
+
+        <div class="section-heading">
+          <h2>Roteiro do dia</h2>
+          <span id="routeCountText"></span>
+        </div>
+
+        <section id="deliveryList" class="delivery-list"></section>
+
+        <section id="emptyState" class="empty-state hidden">
+          <div class="empty-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h11v9H4z" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M15 10h3l2 2.5V16h-5z" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="8" cy="18" r="1.7" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="17.5" cy="18" r="1.7" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </div>
+          <h3>Nenhuma entrega para hoje</h3>
+          <p>
+            Não encontramos linhas na aba Roteiro com a data de hoje e este motorista.
+          </p>
+        </section>
+
+        <section id="finalRouteCard" class="final-route-card hidden">
+          <div class="final-route-head">
+            <div id="finalRouteIcon" class="final-route-icon" aria-hidden="true">🏁</div>
+
+            <div class="final-route-copy">
+              <small id="finalRouteStatus">Finalização do dia</small>
+              <strong id="finalRouteTitle">Aguardando conclusão da rota</strong>
+              <span id="finalRouteDescription">
+                Finalize todas as entregas e o abastecimento previsto.
+              </span>
+            </div>
+          </div>
+
+          <div class="final-route-meta">
+            <div>
+              <small>Horário de chegada</small>
+              <strong id="finalRouteTime">—</strong>
+            </div>
+            <div>
+              <small>KM final</small>
+              <strong id="finalRouteKm">—</strong>
+            </div>
+          </div>
+
+          <button id="finishRouteButton" class="final-route-button" type="button" disabled>
+            Finalização
+          </button>
+        </section>
+      </div>
+    </section>
+
+    <section id="startModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+
+        <div class="modal-title-row">
+          <div>
+            <h2>Iniciar percurso</h2>
+            <p>
+              Confira os dados e informe o hodômetro antes de sair.
+            </p>
+          </div>
+
+          <button id="closeStartModal" class="modal-close" type="button" aria-label="Fechar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-route-info">
+          <div class="modal-info-item">
+            <small>Veículo</small>
+            <strong id="modalVehicle"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Motorista</small>
+            <strong id="modalDriver"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Ajudante 1</small>
+            <strong id="modalHelper1"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Ajudante 2</small>
+            <strong id="modalHelper2"></strong>
+          </div>
+        </div>
+
+        <form id="startRouteForm" novalidate>
+          <div class="start-form-grid">
+            <div class="start-field">
+              <label for="startTime">Hora de início</label>
+              <input id="startTime" type="time" required>
+            </div>
+
+            <div class="start-field">
+              <label for="startKm">KM inicial</label>
+              <input
+                id="startKm"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                step="1"
+                placeholder="Ex.: 85230"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="start-fuel-question">
+            <div class="fuel-decision-copy">
+              Você irá abastecer o veículo hoje?
+            </div>
+
+            <div class="fuel-decision-actions" role="group" aria-label="Confirmação de abastecimento hoje">
+              <button
+                id="startFuelYes"
+                class="fuel-decision-button yes"
+                type="button"
+                data-value="Sim"
+                aria-pressed="false"
+              >
+                Sim
+              </button>
+
+              <button
+                id="startFuelNo"
+                class="fuel-decision-button no"
+                type="button"
+                data-value="Não"
+                aria-pressed="false"
+              >
+                Não
+              </button>
+            </div>
+          </div>
+
+          <div class="location-notice">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            <span id="startLocationStatus">
+              Preparando a localização do celular...
+            </span>
+          </div>
+
+          <div id="startModalMessage" class="modal-message" role="alert"></div>
+
+          <div class="modal-actions">
+            <button id="cancelStartButton" class="modal-button secondary" type="button">
+              Cancelar
+            </button>
+
+            <button id="confirmStartButton" class="modal-button primary" type="submit">
+              <span id="confirmStartButtonText">Localizar e iniciar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="fuelDecisionModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+
+        <div class="modal-title-row">
+          <div>
+            <h2>Abastecimento de hoje</h2>
+            <p>Responda após registrar o KM inicial.</p>
+          </div>
+        </div>
+
+        <div class="fuel-decision-copy">
+          Você irá abastecer o veículo hoje?
+        </div>
+
+        <div class="fuel-decision-actions">
+          <button id="fuelDecisionYes" class="fuel-decision-button yes" type="button">Sim</button>
+          <button id="fuelDecisionNo" class="fuel-decision-button no" type="button">Não</button>
+        </div>
+
+        <div id="fuelDecisionMessage" class="modal-message" role="alert"></div>
+      </div>
+    </section>
+
+    <section id="fuelModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+
+        <div class="modal-title-row">
+          <div>
+            <h2>Registrar abastecimento</h2>
+            <p>Informe os dados mostrados no posto.</p>
+          </div>
+
+          <button id="closeFuelModal" class="modal-close" type="button" aria-label="Fechar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="fuel-modal-summary">
+          <strong id="fuelModalVehicle"></strong>
+          <span id="fuelModalDriver"></span>
+        </div>
+
+        <form id="fuelForm" novalidate>
+          <div class="start-form-grid">
+            <div class="start-field">
+              <label for="fuelKm">KM no abastecimento</label>
+              <input id="fuelKm" type="number" inputmode="numeric" min="0" step="1" placeholder="Ex.: 125480" required>
+            </div>
+
+            <div class="start-field">
+              <label for="fuelLiters">Quantidade de litros</label>
+              <input id="fuelLiters" type="text" inputmode="decimal" maxlength="12" placeholder="Ex.: 75,50" required>
+            </div>
+          </div>
+
+          <div id="fuelModalMessage" class="modal-message" role="alert"></div>
+
+          <div class="modal-actions">
+            <button id="cancelFuelButton" class="modal-button secondary" type="button">Cancelar</button>
+            <button id="confirmFuelButton" class="modal-button primary" type="submit">
+              <span id="confirmFuelButtonText">Salvar abastecimento</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="lunchModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+        <div class="modal-title-row">
+          <div>
+            <h2>Parada para almoço</h2>
+            <p>Informe os horários e o KM do veículo.</p>
+          </div>
+          <button id="closeLunchModal" class="modal-close" type="button" aria-label="Fechar">×</button>
+        </div>
+        <form id="lunchForm" novalidate>
+          <div class="start-form-grid">
+            <div class="start-field">
+              <label for="lunchStartTime">Hora de início</label>
+              <input id="lunchStartTime" type="time" required>
+            </div>
+            <div class="start-field">
+              <label for="lunchEndTime">Hora de fim</label>
+              <input id="lunchEndTime" type="time" required>
+            </div>
+            <div class="start-field">
+              <label for="lunchKm">KM</label>
+              <input id="lunchKm" type="number" inputmode="numeric" min="0" step="1" required>
+            </div>
+          </div>
+          <div class="location-notice"><span id="lunchLocationStatus">Preparando localização...</span></div>
+          <div id="lunchModalMessage" class="modal-message" role="alert"></div>
+          <div class="modal-actions">
+            <button id="cancelLunchButton" class="modal-button secondary" type="button">Cancelar</button>
+            <button id="confirmLunchButton" class="modal-button primary" type="submit">
+              <span id="confirmLunchButtonText">Localizar e salvar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="finishRouteModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+
+        <div class="modal-title-row">
+          <div>
+            <h2>Finalização do dia</h2>
+            <p>Registre a chegada ao CD e o KM final do veículo.</p>
+          </div>
+
+          <button id="closeFinishRouteModal" class="modal-close" type="button" aria-label="Fechar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-route-info">
+          <div class="modal-info-item">
+            <small>Veículo</small>
+            <strong id="finishModalVehicle"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Motorista</small>
+            <strong id="finishModalDriver"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Ajudante 1</small>
+            <strong id="finishModalHelper1"></strong>
+          </div>
+
+          <div class="modal-info-item">
+            <small>Ajudante 2</small>
+            <strong id="finishModalHelper2"></strong>
+          </div>
+        </div>
+
+        <form id="finishRouteForm" novalidate>
+          <div class="start-form-grid">
+            <div class="start-field">
+              <label for="finishRouteTime">Horário de chegada ao CD</label>
+              <input id="finishRouteTime" type="time" required>
+            </div>
+
+            <div class="start-field">
+              <label for="finishRouteKm">KM final</label>
+              <input
+                id="finishRouteKm"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                step="1"
+                placeholder="Ex.: 126250"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="location-notice">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            <span id="finishRouteLocationStatus">
+              Preparando a localização do celular...
+            </span>
+          </div>
+
+          <div id="finishRouteModalMessage" class="modal-message" role="alert"></div>
+
+          <div class="modal-actions">
+            <button id="cancelFinishRouteButton" class="modal-button secondary" type="button">
+              Cancelar
+            </button>
+
+            <button id="confirmFinishRouteButton" class="modal-button primary" type="submit">
+              <span id="confirmFinishRouteButtonText">Localizar e finalizar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="deliveryModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-panel">
+        <div class="modal-handle"></div>
+
+        <div class="modal-title-row">
+          <div>
+            <h2 id="deliveryModalTitle">Registrar chegada</h2>
+            <p id="deliveryModalSubtitle">
+              Informe o hodômetro e confirme a localização atual.
+            </p>
+          </div>
+
+          <button id="closeDeliveryModal" class="modal-close" type="button" aria-label="Fechar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="delivery-modal-summary">
+          <strong id="deliveryModalClient"></strong>
+          <span id="deliveryModalDetails"></span>
+        </div>
+
+        <form id="deliveryOperationForm" novalidate>
+          <div class="start-form-grid">
+            <div class="start-field">
+              <label id="deliveryTimeLabel" for="deliveryTime">Horário de chegada</label>
+              <input id="deliveryTime" type="time" required>
+            </div>
+
+            <div class="start-field">
+              <label id="deliveryKmLabel" for="deliveryKm">KM de chegada</label>
+              <input
+                id="deliveryKm"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                step="1"
+                placeholder="Ex.: 124580"
+                required
+              >
+            </div>
+          </div>
+
+          <section id="deliveryChecklist" class="delivery-checklist hidden">
+            <div class="checklist-heading">Checklist da entrega</div>
+
+            <div class="checklist-question">
+              <strong>A entrega foi concluída?</strong>
+              <small>Confirme antes de responder às demais perguntas.</small>
+
+              <div class="checklist-choice-row" data-checklist-group="entregaConcluida">
+                <button class="checklist-choice" type="button" data-value="Sim">Sim</button>
+                <button class="checklist-choice" type="button" data-value="Não">Não</button>
+              </div>
+            </div>
+
+            <div id="nonDeliveryReasonWrap" class="non-delivery-reason-wrap hidden">
+              <strong>Selecione o motivo da não entrega</strong>
+              <small>Escolha obrigatoriamente uma opção da tabela.</small>
+
+              <div class="delivery-reason-table">
+                <div class="delivery-reason-table-header">Motivo não entregue</div>
+                <div id="nonDeliveryReasonList" class="delivery-reason-list"></div>
+              </div>
+            </div>
+
+            <div id="completedDeliveryQuestions" class="completed-delivery-questions hidden">
+              <div class="checklist-question">
+                <strong>Os produtos ficaram desembalados/montados?</strong>
+                <small>Selecione uma das opções abaixo.</small>
+
+                <div class="checklist-choice-row" data-checklist-group="produtosMontados">
+                  <button class="checklist-choice" type="button" data-value="Sim">Sim</button>
+                  <button class="checklist-choice" type="button" data-value="Não">Não</button>
+                </div>
+              </div>
+
+              <div class="checklist-question">
+                <strong>Teve alguma ocorrência na entrega?</strong>
+                <small>Informe qualquer problema identificado no atendimento.</small>
+
+                <div class="checklist-choice-row" data-checklist-group="teveOcorrencia">
+                  <button class="checklist-choice" type="button" data-value="Sim">Sim</button>
+                  <button class="checklist-choice" type="button" data-value="Não">Não</button>
+                </div>
+              </div>
+
+              <div id="proofQuestion" class="checklist-question hidden">
+                <strong>A ocorrência está descrita no comprovante?</strong>
+                <small>Confirme se o problema foi anotado no comprovante da entrega.</small>
+
+                <div class="checklist-choice-row" data-checklist-group="descritoComprovante">
+                  <button class="checklist-choice" type="button" data-value="Sim">Sim</button>
+                  <button class="checklist-choice" type="button" data-value="Não">Não</button>
+                </div>
+              </div>
+
+              <div id="driverDescriptionWrap" class="driver-description-wrap hidden">
+                <label for="driverDescription">Descreva o que aconteceu</label>
+                <textarea
+                  id="driverDescription"
+                  class="driver-description"
+                  maxlength="1000"
+                  placeholder="Escreva aqui a ocorrência identificada..."
+                ></textarea>
+                <span id="descriptionCounter" class="description-counter">0/1000</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="location-notice">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            <span id="deliveryLocationStatus">
+              Preparando a localização do celular...
+            </span>
+          </div>
+
+          <div id="deliveryModalMessage" class="modal-message" role="alert"></div>
+
+          <div class="modal-actions">
+            <button id="cancelDeliveryButton" class="modal-button secondary" type="button">
+              Cancelar
+            </button>
+
+            <button id="confirmDeliveryButton" class="modal-button primary" type="submit">
+              <span id="confirmDeliveryButtonText">Localizar e salvar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const URL_APPS_SCRIPT =
+      'https://script.google.com/macros/s/AKfycbyz3cg0zp69FBv48Eye0OdZq53EEZnZ0UxrAOEeAEtSpsmSGulTnnhF5GKc0rs9fVyOjA/exec';
+
+    const WHATSAPP_DESTINO = '5511986565942';
+
+    const CALLBACK_RESULTADO = 'clamilogReceberResultado';
+    const CALLBACK_SESSAO = 'clamilogReceberSessao';
+    const CALLBACK_ATUALIZACAO = 'clamilogReceberAtualizacao';
+    const CALLBACK_COMPLEMENTO = 'clamilogReceberComplementoRota';
+    const TEMPO_LIMITE = 30000;
+    const INTERVALO_CONSULTA = 250;
+
+    const elementos = {
+      loginScreen: document.getElementById('loginScreen'),
+      loadingScreen: document.getElementById('loadingScreen'),
+      routeScreen: document.getElementById('routeScreen'),
+
+      loginForm: document.getElementById('loginForm'),
+      usuario: document.getElementById('usuario'),
+      senha: document.getElementById('senha'),
+      lembrar: document.getElementById('lembrar'),
+      loginButton: document.getElementById('loginButton'),
+      loginButtonText: document.getElementById('loginButtonText'),
+      eyeButton: document.getElementById('eyeButton'),
+      message: document.getElementById('message'),
+
+      logoutButton: document.getElementById('logoutButton'),
+      refreshRouteButton: document.getElementById('refreshRouteButton'),
+      refreshRouteButtonText: document.getElementById('refreshRouteButtonText'),
+      refreshRouteMessage: document.getElementById('refreshRouteMessage'),
+      routeUser: document.getElementById('routeUser'),
+      routeDate: document.getElementById('routeDate'),
+      routeVehicle: document.getElementById('routeVehicle'),
+      routeHelpers: document.getElementById('routeHelpers'),
+      routeStatus: document.getElementById('routeStatus'),
+      summaryStops: document.getElementById('summaryStops'),
+      summaryOrders: document.getElementById('summaryOrders'),
+      summaryItems: document.getElementById('summaryItems'),
+      routeCountText: document.getElementById('routeCountText'),
+      deliveryList: document.getElementById('deliveryList'),
+      emptyState: document.getElementById('emptyState'),
+
+      startRouteCard: document.getElementById('startRouteCard'),
+      startedRouteCard: document.getElementById('startedRouteCard'),
+      startRouteButton: document.getElementById('startRouteButton'),
+      startedRouteTitle: document.getElementById('startedRouteTitle'),
+      startedRouteTime: document.getElementById('startedRouteTime'),
+      startedRouteKm: document.getElementById('startedRouteKm'),
+      startedRouteLocation: document.getElementById('startedRouteLocation'),
+      whatsappShareButton:
+        document.getElementById('whatsappShareButton'),
+
+      fuelCard: document.getElementById('fuelCard'),
+      fuelCardIcon: document.getElementById('fuelCardIcon'),
+      fuelCardStatus: document.getElementById('fuelCardStatus'),
+      fuelCardTitle: document.getElementById('fuelCardTitle'),
+      fuelCardDescription: document.getElementById('fuelCardDescription'),
+      fuelCardVehicle: document.getElementById('fuelCardVehicle'),
+      fuelCardDriver: document.getElementById('fuelCardDriver'),
+      fuelCardButton: document.getElementById('fuelCardButton'),
+
+      finalRouteCard: document.getElementById('finalRouteCard'),
+      finalRouteIcon: document.getElementById('finalRouteIcon'),
+      finalRouteStatus: document.getElementById('finalRouteStatus'),
+      finalRouteTitle: document.getElementById('finalRouteTitle'),
+      finalRouteDescription:
+        document.getElementById('finalRouteDescription'),
+      finalRouteTime: document.getElementById('finalRouteTime'),
+      finalRouteKm: document.getElementById('finalRouteKm'),
+      finishRouteButton: document.getElementById('finishRouteButton'),
+
+      fuelDecisionModal: document.getElementById('fuelDecisionModal'),
+      fuelDecisionYes: document.getElementById('fuelDecisionYes'),
+      fuelDecisionNo: document.getElementById('fuelDecisionNo'),
+      fuelDecisionMessage: document.getElementById('fuelDecisionMessage'),
+
+      fuelModal: document.getElementById('fuelModal'),
+      closeFuelModal: document.getElementById('closeFuelModal'),
+      cancelFuelButton: document.getElementById('cancelFuelButton'),
+      fuelForm: document.getElementById('fuelForm'),
+      fuelModalVehicle: document.getElementById('fuelModalVehicle'),
+      fuelModalDriver: document.getElementById('fuelModalDriver'),
+      fuelKm: document.getElementById('fuelKm'),
+      fuelLiters: document.getElementById('fuelLiters'),
+      fuelModalMessage: document.getElementById('fuelModalMessage'),
+      confirmFuelButton: document.getElementById('confirmFuelButton'),
+      confirmFuelButtonText:
+        document.getElementById('confirmFuelButtonText'),
+
+      lunchCard: document.getElementById('lunchCard'),
+      lunchCardTitle: document.getElementById('lunchCardTitle'),
+      lunchCardDescription: document.getElementById('lunchCardDescription'),
+      lunchCardButton: document.getElementById('lunchCardButton'),
+      lunchModal: document.getElementById('lunchModal'),
+      closeLunchModal: document.getElementById('closeLunchModal'),
+      cancelLunchButton: document.getElementById('cancelLunchButton'),
+      lunchForm: document.getElementById('lunchForm'),
+      lunchStartTime: document.getElementById('lunchStartTime'),
+      lunchEndTime: document.getElementById('lunchEndTime'),
+      lunchKm: document.getElementById('lunchKm'),
+      lunchLocationStatus: document.getElementById('lunchLocationStatus'),
+      lunchModalMessage: document.getElementById('lunchModalMessage'),
+      confirmLunchButton: document.getElementById('confirmLunchButton'),
+      confirmLunchButtonText: document.getElementById('confirmLunchButtonText'),
+
+      startModal: document.getElementById('startModal'),
+      closeStartModal: document.getElementById('closeStartModal'),
+      cancelStartButton: document.getElementById('cancelStartButton'),
+      startRouteForm: document.getElementById('startRouteForm'),
+      startTime: document.getElementById('startTime'),
+      startKm: document.getElementById('startKm'),
+      startFuelYes: document.getElementById('startFuelYes'),
+      startFuelNo: document.getElementById('startFuelNo'),
+      startLocationStatus:
+        document.getElementById('startLocationStatus'),
+      modalVehicle: document.getElementById('modalVehicle'),
+      modalDriver: document.getElementById('modalDriver'),
+      modalHelper1: document.getElementById('modalHelper1'),
+      modalHelper2: document.getElementById('modalHelper2'),
+      startModalMessage: document.getElementById('startModalMessage'),
+      confirmStartButton: document.getElementById('confirmStartButton'),
+      confirmStartButtonText: document.getElementById('confirmStartButtonText'),
+
+      finishRouteModal: document.getElementById('finishRouteModal'),
+      closeFinishRouteModal:
+        document.getElementById('closeFinishRouteModal'),
+      cancelFinishRouteButton:
+        document.getElementById('cancelFinishRouteButton'),
+      finishRouteForm: document.getElementById('finishRouteForm'),
+      finishRouteTime: document.getElementById('finishRouteTime'),
+      finishRouteKm: document.getElementById('finishRouteKm'),
+      finishRouteLocationStatus:
+        document.getElementById('finishRouteLocationStatus'),
+      finishModalVehicle: document.getElementById('finishModalVehicle'),
+      finishModalDriver: document.getElementById('finishModalDriver'),
+      finishModalHelper1: document.getElementById('finishModalHelper1'),
+      finishModalHelper2: document.getElementById('finishModalHelper2'),
+      finishRouteModalMessage:
+        document.getElementById('finishRouteModalMessage'),
+      confirmFinishRouteButton:
+        document.getElementById('confirmFinishRouteButton'),
+      confirmFinishRouteButtonText:
+        document.getElementById('confirmFinishRouteButtonText'),
+
+      deliveryModal: document.getElementById('deliveryModal'),
+      deliveryModalTitle: document.getElementById('deliveryModalTitle'),
+      deliveryModalSubtitle: document.getElementById('deliveryModalSubtitle'),
+      deliveryModalClient: document.getElementById('deliveryModalClient'),
+      deliveryModalDetails: document.getElementById('deliveryModalDetails'),
+      closeDeliveryModal: document.getElementById('closeDeliveryModal'),
+      cancelDeliveryButton: document.getElementById('cancelDeliveryButton'),
+      deliveryOperationForm: document.getElementById('deliveryOperationForm'),
+      deliveryTimeLabel: document.getElementById('deliveryTimeLabel'),
+      deliveryKmLabel: document.getElementById('deliveryKmLabel'),
+      deliveryTime: document.getElementById('deliveryTime'),
+      deliveryKm: document.getElementById('deliveryKm'),
+      deliveryLocationStatus:
+        document.getElementById('deliveryLocationStatus'),
+      deliveryChecklist: document.getElementById('deliveryChecklist'),
+      completedDeliveryQuestions:
+        document.getElementById('completedDeliveryQuestions'),
+      nonDeliveryReasonWrap:
+        document.getElementById('nonDeliveryReasonWrap'),
+      nonDeliveryReasonList:
+        document.getElementById('nonDeliveryReasonList'),
+      proofQuestion: document.getElementById('proofQuestion'),
+      driverDescriptionWrap:
+        document.getElementById('driverDescriptionWrap'),
+      driverDescription: document.getElementById('driverDescription'),
+      descriptionCounter: document.getElementById('descriptionCounter'),
+      deliveryModalMessage: document.getElementById('deliveryModalMessage'),
+      confirmDeliveryButton: document.getElementById('confirmDeliveryButton'),
+      confirmDeliveryButtonText:
+        document.getElementById('confirmDeliveryButtonText')
+    };
+
+    let requestIdAtual = null;
+    let operacaoAtual = null;
+    let operacaoIniciadaEm = 0;
+    let temporizadorConsulta = null;
+    let requisicaoEmAndamento = false;
+    let usuarioAtual = '';
+    let rotaAtual = null;
+    let entregaSelecionada = null;
+    let movimentoEntregaAtual = '';
+    let abastecimentoHojeSelecionado = '';
+    let localizacaoPreparada = null;
+    let localizacaoPreparando = false;
+    let iframePostAtual = null;
+    let formularioPostAtual = null;
+
+    document.addEventListener('DOMContentLoaded', iniciar);
+
+    function iniciar() {
+      restaurarUsuario();
+      configurarEventos();
+
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (token) {
+        mostrarTela('loading');
+        carregarSessao(token);
+      }
+    }
+
+    function configurarEventos() {
+      elementos.loginForm.addEventListener('submit', realizarLogin);
+      elementos.eyeButton.addEventListener('click', alternarSenha);
+      elementos.logoutButton.addEventListener('click', sair);
+
+      elementos.refreshRouteButton.addEventListener(
+        'click',
+        atualizarRoteiroNaTela
+      );
+      elementos.usuario.addEventListener('input', esconderMensagem);
+      elementos.senha.addEventListener('input', esconderMensagem);
+
+      elementos.startRouteButton.addEventListener(
+        'click',
+        abrirModalInicio
+      );
+
+      elementos.closeStartModal.addEventListener(
+        'click',
+        fecharModalInicio
+      );
+
+      elementos.cancelStartButton.addEventListener(
+        'click',
+        fecharModalInicio
+      );
+
+      elementos.startRouteForm.addEventListener(
+        'submit',
+        iniciarPercurso
+      );
+
+      elementos.startFuelYes.addEventListener('click', function () {
+        selecionarAbastecimentoInicio('Sim');
+      });
+
+      elementos.startFuelNo.addEventListener('click', function () {
+        selecionarAbastecimentoInicio('Não');
+      });
+
+      elementos.whatsappShareButton.addEventListener(
+        'click',
+        abrirResumoNoWhatsApp
+      );
+
+      elementos.fuelCardButton.addEventListener(
+        'click',
+        abrirModalAbastecimento
+      );
+
+      elementos.fuelDecisionYes.addEventListener('click', function () {
+        responderAbastecimentoHoje('Sim');
+      });
+
+      elementos.fuelDecisionNo.addEventListener('click', function () {
+        responderAbastecimentoHoje('Não');
+      });
+
+      elementos.closeFuelModal.addEventListener(
+        'click',
+        fecharModalAbastecimento
+      );
+
+      elementos.cancelFuelButton.addEventListener(
+        'click',
+        fecharModalAbastecimento
+      );
+
+      elementos.fuelForm.addEventListener(
+        'submit',
+        salvarAbastecimento
+      );
+
+      elementos.lunchCardButton.addEventListener('click', abrirModalAlmoco);
+      elementos.closeLunchModal.addEventListener('click', fecharModalAlmoco);
+      elementos.cancelLunchButton.addEventListener('click', fecharModalAlmoco);
+      elementos.lunchForm.addEventListener('submit', salvarAlmoco);
+      elementos.lunchModal.addEventListener('click', function (evento) {
+        if (evento.target === elementos.lunchModal) fecharModalAlmoco();
+      });
+
+      elementos.finishRouteButton.addEventListener(
+        'click',
+        abrirModalFinalizacao
+      );
+
+      elementos.closeFinishRouteModal.addEventListener(
+        'click',
+        fecharModalFinalizacao
+      );
+
+      elementos.cancelFinishRouteButton.addEventListener(
+        'click',
+        fecharModalFinalizacao
+      );
+
+      elementos.finishRouteForm.addEventListener(
+        'submit',
+        finalizarPercurso
+      );
+
+      elementos.deliveryList.addEventListener(
+        'click',
+        tratarCliqueEntrega
+      );
+
+      elementos.closeDeliveryModal.addEventListener(
+        'click',
+        fecharModalEntrega
+      );
+
+      elementos.cancelDeliveryButton.addEventListener(
+        'click',
+        fecharModalEntrega
+      );
+
+      elementos.deliveryOperationForm.addEventListener(
+        'submit',
+        registrarMovimentoEntrega
+      );
+
+      elementos.deliveryChecklist.addEventListener(
+        'click',
+        tratarCliqueChecklist
+      );
+
+      elementos.driverDescription.addEventListener(
+        'input',
+        atualizarContadorDescricao
+      );
+
+      elementos.startModal.addEventListener('click', function (evento) {
+        if (evento.target === elementos.startModal) {
+          fecharModalInicio();
+        }
+      });
+
+      elementos.deliveryModal.addEventListener('click', function (evento) {
+        if (evento.target === elementos.deliveryModal) {
+          fecharModalEntrega();
+        }
+      });
+
+      elementos.fuelModal.addEventListener('click', function (evento) {
+        if (evento.target === elementos.fuelModal) {
+          fecharModalAbastecimento();
+        }
+      });
+
+      elementos.finishRouteModal.addEventListener(
+        'click',
+        function (evento) {
+          if (evento.target === elementos.finishRouteModal) {
+            fecharModalFinalizacao();
+          }
+        }
+      );
+
+      window.addEventListener('message', receberResultadoPostDireto);
+    }
+
+    async function realizarLogin(evento) {
+      evento.preventDefault();
+
+      if (requisicaoEmAndamento) {
+        return;
+      }
+
+      esconderMensagem();
+
+      const usuario = elementos.usuario.value.trim();
+      const senha = elementos.senha.value.trim();
+
+      if (!usuario || !senha) {
+        mostrarMensagem('Preencha o usuário e a senha.', 'error');
+        return;
+      }
+
+      definirLoginCarregando(true);
+
+      await enviarOperacao(
+        'login',
+        {
+          usuario: usuario,
+          senha: senha
+        }
+      );
+    }
+
+    function abrirModalInicio() {
+      if (
+        !rotaAtual ||
+        !rotaAtual.encontrado ||
+        rotaAtual.percurso?.iniciado
+      ) {
+        return;
+      }
+
+      elementos.modalVehicle.textContent =
+        rotaAtual.veiculoPrincipal ||
+        rotaAtual.veiculoTexto ||
+        'Não informado';
+
+      elementos.modalDriver.textContent =
+        usuarioAtual || rotaAtual.motorista || 'Não informado';
+
+      elementos.modalHelper1.textContent =
+        rotaAtual.ajudante1 || 'Não informado';
+
+      elementos.modalHelper2.textContent =
+        rotaAtual.ajudante2 || 'Não informado';
+
+      elementos.startTime.value = horaAtual();
+      elementos.startKm.value = '';
+      selecionarAbastecimentoInicio('');
+      prepararLocalizacao(elementos.startLocationStatus);
+      esconderMensagemModal();
+      definirInicioCarregando(false);
+      elementos.startModal.classList.remove('hidden');
+
+      setTimeout(function () {
+        elementos.startKm.focus();
+      }, 120);
+    }
+
+    function fecharModalInicio() {
+      if (requisicaoEmAndamento && operacaoAtual === 'iniciarPercurso') {
+        return;
+      }
+
+      elementos.startModal.classList.add('hidden');
+      esconderMensagemModal();
+    }
+
+    function selecionarAbastecimentoInicio(resposta) {
+      abastecimentoHojeSelecionado = resposta;
+
+      [elementos.startFuelYes, elementos.startFuelNo].forEach(
+        function (botao) {
+          const selecionado = botao.dataset.value === resposta;
+          botao.classList.toggle('selected', selecionado);
+          botao.setAttribute(
+            'aria-pressed',
+            selecionado ? 'true' : 'false'
+          );
+        }
+      );
+
+      if (resposta) {
+        esconderMensagemModal();
+      }
+    }
+
+    function iniciarPercurso(evento) {
+      evento.preventDefault();
+
+      if (requisicaoEmAndamento) {
+        return;
+      }
+
+      const hora = elementos.startTime.value;
+      const km = elementos.startKm.value.trim();
+      const abastecerHoje = abastecimentoHojeSelecionado;
+
+      esconderMensagemModal();
+
+      if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(hora)) {
+        mostrarMensagemModal('Informe uma hora válida.');
+        return;
+      }
+
+      if (!km || Number(km) < 0) {
+        mostrarMensagemModal('Informe o KM inicial do veículo.');
+        elementos.startKm.focus();
+        return;
+      }
+
+      if (!abastecerHoje) {
+        mostrarMensagemModal(
+          'Informe se irá abastecer o veículo hoje.'
+        );
+        return;
+      }
+
+      if (!navigator.geolocation) {
+        mostrarMensagemModal(
+          'Este aparelho não oferece acesso à localização.'
+        );
+        return;
+      }
+
+      definirInicioCarregando(true, 'Confirmando localização...');
+
+      obterLocalizacaoParaSalvar(
+        elementos.startLocationStatus,
+        function (coordenadas) {
+          enviarInicioPercurso(
+            hora,
+            km,
+            abastecerHoje,
+            coordenadas
+          );
+        },
+        function (erro) {
+          definirInicioCarregando(false);
+          mostrarMensagemModal(mensagemErroLocalizacao(erro));
+        }
+      );
+    }
+
+    function prepararLocalizacao(elementoStatus) {
+      if (!navigator.geolocation) {
+        atualizarStatusLocalizacao(
+          elementoStatus,
+          'Localização indisponível neste aparelho.'
+        );
+        return;
+      }
+
+      if (
+        localizacaoPreparada &&
+        Date.now() - localizacaoPreparada.obtidaEm < 60000
+      ) {
+        atualizarStatusLocalizacao(
+          elementoStatus,
+          'Localização pronta para salvar.'
+        );
+        return;
+      }
+
+      if (localizacaoPreparando) {
+        atualizarStatusLocalizacao(
+          elementoStatus,
+          'Obtendo localização...'
+        );
+        return;
+      }
+
+      localizacaoPreparando = true;
+      atualizarStatusLocalizacao(
+        elementoStatus,
+        'Obtendo localização...'
+      );
+
+      navigator.geolocation.getCurrentPosition(
+        function (posicao) {
+          localizacaoPreparada = {
+            coords: posicao.coords,
+            obtidaEm: Date.now()
+          };
+          localizacaoPreparando = false;
+          atualizarStatusLocalizacao(
+            elementoStatus,
+            'Localização pronta para salvar.'
+          );
+        },
+        function () {
+          localizacaoPreparando = false;
+          atualizarStatusLocalizacao(
+            elementoStatus,
+            'O GPS será confirmado ao salvar.'
+          );
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 12000,
+          maximumAge: 30000
+        }
+      );
+    }
+
+    function obterLocalizacaoParaSalvar(
+      elementoStatus,
+      aoSucesso,
+      aoErro
+    ) {
+      if (
+        localizacaoPreparada &&
+        Date.now() - localizacaoPreparada.obtidaEm < 60000
+      ) {
+        atualizarStatusLocalizacao(
+          elementoStatus,
+          'Localização pronta.'
+        );
+        aoSucesso(localizacaoPreparada.coords);
+        return;
+      }
+
+      atualizarStatusLocalizacao(
+        elementoStatus,
+        'Confirmando localização...'
+      );
+
+      navigator.geolocation.getCurrentPosition(
+        function (posicao) {
+          localizacaoPreparada = {
+            coords: posicao.coords,
+            obtidaEm: Date.now()
+          };
+          atualizarStatusLocalizacao(
+            elementoStatus,
+            'Localização pronta.'
+          );
+          aoSucesso(posicao.coords);
+        },
+        aoErro,
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 15000
+        }
+      );
+    }
+
+    function atualizarStatusLocalizacao(elemento, texto) {
+      if (elemento) {
+        elemento.textContent = texto;
+      }
+    }
+
+    async function enviarInicioPercurso(
+      hora,
+      km,
+      abastecerHoje,
+      coordenadas
+    ) {
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token) {
+        definirInicioCarregando(false);
+        sair();
+        return;
+      }
+
+      definirInicioCarregando(true, 'Salvando início...');
+
+      await enviarOperacao(
+        'iniciarPercurso',
+        {
+          token: token,
+          hora: hora,
+          km: km,
+          abastecerHoje: abastecerHoje,
+          latitude: coordenadas.latitude,
+          longitude: coordenadas.longitude,
+          precisao: coordenadas.accuracy
+        }
+      );
+    }
+
+
+    function verificarPerguntaAbastecimento() {
+      const abastecimento = rotaAtual && rotaAtual.abastecimento
+        ? rotaAtual.abastecimento
+        : null;
+
+      if (
+        abastecimento &&
+        abastecimento.perguntar &&
+        elementos.fuelDecisionModal.classList.contains('hidden') &&
+        !requisicaoEmAndamento
+      ) {
+        esconderMensagemDecisaoAbastecimento();
+        definirDecisaoAbastecimentoCarregando(false);
+        elementos.fuelDecisionModal.classList.remove('hidden');
+      }
+    }
+
+    async function responderAbastecimentoHoje(resposta) {
+      if (requisicaoEmAndamento) {
+        return;
+      }
+
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token) {
+        sair();
+        return;
+      }
+
+      esconderMensagemDecisaoAbastecimento();
+      definirDecisaoAbastecimentoCarregando(true);
+
+      await enviarOperacao(
+        'definirAbastecimentoHoje',
+        {
+          token: token,
+          resposta: resposta
+        }
+      );
+    }
+
+    function abrirModalAbastecimento() {
+      const abastecimento = rotaAtual && rotaAtual.abastecimento
+        ? rotaAtual.abastecimento
+        : null;
+
+      if (
+        !abastecimento ||
+        !abastecimento.planejado ||
+        abastecimento.registrado ||
+        requisicaoEmAndamento
+      ) {
+        return;
+      }
+
+      elementos.fuelModalVehicle.textContent =
+        abastecimento.placa ||
+        rotaAtual.veiculoPrincipal ||
+        'Veículo não informado';
+
+      elementos.fuelModalDriver.textContent =
+        'Motorista: ' + (abastecimento.motorista || usuarioAtual);
+
+      elementos.fuelKm.value = '';
+      elementos.fuelLiters.value = '';
+      esconderMensagemAbastecimento();
+      definirAbastecimentoCarregando(false);
+      elementos.fuelModal.classList.remove('hidden');
+
+      setTimeout(function () {
+        elementos.fuelKm.focus();
+      }, 120);
+    }
+
+    function fecharModalAbastecimento() {
+      if (
+        requisicaoEmAndamento &&
+        operacaoAtual === 'registrarAbastecimento'
+      ) {
+        return;
+      }
+
+      elementos.fuelModal.classList.add('hidden');
+      esconderMensagemAbastecimento();
+    }
+
+    async function salvarAbastecimento(evento) {
+      evento.preventDefault();
+
+      if (requisicaoEmAndamento) {
+        return;
+      }
+
+      const km = elementos.fuelKm.value.trim();
+      const litros = elementos.fuelLiters.value.trim();
+      const litrosNormalizados = litros.replace(',', '.');
+
+      esconderMensagemAbastecimento();
+
+      if (!km || Number(km) < 0) {
+        mostrarMensagemAbastecimento(
+          'Informe o KM no momento do abastecimento.'
+        );
+        elementos.fuelKm.focus();
+        return;
+      }
+
+      if (
+        !/^\d+([.,]\d{1,3})?$/.test(litros) ||
+        Number(litrosNormalizados) <= 0
+      ) {
+        mostrarMensagemAbastecimento(
+          'Informe corretamente a quantidade de litros.'
+        );
+        elementos.fuelLiters.focus();
+        return;
+      }
+
+      const percurso = rotaAtual && rotaAtual.percurso
+        ? rotaAtual.percurso
+        : {};
+      const kmInicial = Number(
+        String(percurso.km || '').replace(',', '.')
+      );
+
+      if (Number.isFinite(kmInicial) && Number(km) < kmInicial) {
+        mostrarMensagemAbastecimento(
+          'O KM do abastecimento não pode ser menor que o KM inicial.'
+        );
+        elementos.fuelKm.focus();
+        return;
+      }
+
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token) {
+        sair();
+        return;
+      }
+
+      definirAbastecimentoCarregando(true);
+
+      await enviarOperacao(
+        'registrarAbastecimento',
+        {
+          token: token,
+          kmAbastecimento: km,
+          qtsLitros: litros
+        }
+      );
+    }
+
+    function obterEstadoFinalizacaoRota() {
+      const rota = rotaAtual || {};
+      const percurso = rota.percurso || {};
+      const finalizacao = rota.finalizacao || {};
+      const abastecimento = rota.abastecimento || {};
+      const entregas = Array.isArray(rota.entregas)
+        ? rota.entregas
+        : [];
+      const pendentes = entregas.filter(function (entrega) {
+        return !entrega.finalizada;
+      });
+      const abastecimentoPendente = Boolean(
+        abastecimento.planejado && !abastecimento.registrado
+      );
+      const finalizado = Boolean(finalizacao.finalizado);
+      const pronto = Boolean(
+        rota.encontrado &&
+        percurso.iniciado &&
+        entregas.length &&
+        !pendentes.length &&
+        !abastecimentoPendente &&
+        !finalizado
+      );
+
+      return {
+        pronto: pronto,
+        finalizado: finalizado,
+        pendentes: pendentes.length,
+        abastecimentoPendente: abastecimentoPendente,
+        entregas: entregas
+      };
+    }
+
+    function abrirModalAlmoco() {
+      if (!rotaAtual || !rotaAtual.percurso || !rotaAtual.percurso.iniciado ||
+          (rotaAtual.almoco && rotaAtual.almoco.registrado)) return;
+      esconderMensagemAlmoco();
+      elementos.lunchStartTime.value = horaAtual();
+      elementos.lunchEndTime.value = '';
+      elementos.lunchKm.value = '';
+      elementos.lunchLocationStatus.textContent = 'Preparando localização...';
+      elementos.lunchModal.classList.remove('hidden');
+      prepararLocalizacao(elementos.lunchLocationStatus);
+    }
+
+    function fecharModalAlmoco() {
+      if (operacaoAtual === 'registrarAlmoco' && requisicaoEmAndamento) return;
+      elementos.lunchModal.classList.add('hidden');
+      esconderMensagemAlmoco();
+    }
+
+    async function salvarAlmoco(evento) {
+      evento.preventDefault();
+      const inicio = elementos.lunchStartTime.value;
+      const fim = elementos.lunchEndTime.value;
+      const km = elementos.lunchKm.value.trim();
+      if (!inicio || !fim || !km) {
+        mostrarMensagemAlmoco('Preencha os horários e o KM.'); return;
+      }
+      if (fim <= inicio) {
+        mostrarMensagemAlmoco('O horário de fim deve ser maior que o início.'); return;
+      }
+      if (!navigator.geolocation) {
+        mostrarMensagemAlmoco('Este aparelho não oferece acesso à localização.');
+        return;
+      }
+      definirAlmocoCarregando(true, 'Confirmando localização...');
+      obterLocalizacaoParaSalvar(
+        elementos.lunchLocationStatus,
+        function (pos) {
+          enviarOperacao('registrarAlmoco', {
+            token: sessionStorage.getItem('clamilog_token') || '',
+            horaInicio: inicio,
+            horaFim: fim,
+            km: km,
+            latitude: pos.latitude,
+            longitude: pos.longitude,
+            precisao: pos.accuracy
+          });
+        },
+        function (erro) {
+          definirAlmocoCarregando(false);
+          mostrarMensagemAlmoco(mensagemErroLocalizacao(erro));
+        }
+      );
+    }
+
+    function renderizarCartaoAlmoco(percursoIniciado) {
+      const almoco = rotaAtual && rotaAtual.almoco ? rotaAtual.almoco : {};
+      const mostrar = Boolean(percursoIniciado);
+      elementos.lunchCard.classList.toggle('show', mostrar);
+      elementos.lunchCard.classList.toggle('done', Boolean(almoco.registrado));
+      if (!mostrar) return;
+      if (almoco.registrado) {
+        elementos.lunchCardTitle.textContent = '✅ Almoço registrado';
+        elementos.lunchCardDescription.textContent =
+          (almoco.horaInicio || '—') + ' às ' + (almoco.horaFim || '—') +
+          ' · KM ' + (almoco.km || '—');
+        elementos.lunchCardButton.disabled = true;
+        elementos.lunchCardButton.textContent = 'Almoço concluído';
+      } else {
+        elementos.lunchCardTitle.textContent = '🍽️ Parada para almoço';
+        elementos.lunchCardDescription.textContent = 'Registre os horários, o KM e a localização.';
+        elementos.lunchCardButton.disabled = false;
+        elementos.lunchCardButton.textContent = 'Registrar almoço';
+      }
+    }
+
+    function abrirWhatsAppAlmoco(registro) {
+      const mensagem = [
+        '🍽️ *PARADA PARA ALMOÇO — CLAMILOG*', '',
+        '*Motorista:* ' + (registro.motorista || usuarioAtual),
+        '*Veículo:* ' + (registro.veiculo || rotaAtual.veiculoPrincipal || '—'),
+        '*Ajudante 1:* ' + (registro.ajudante1 || '—'),
+        '*Ajudante 2:* ' + (registro.ajudante2 || '—'), '',
+        '*Início:* ' + (registro.horaInicio || '—'),
+        '*Fim:* ' + (registro.horaFim || '—'),
+        '*KM:* ' + (registro.km || '—'),
+        '*Localização:* ' + (registro.localizacao || '—')
+      ].join('\n');
+      window.location.href = 'https://wa.me/' + WHATSAPP_DESTINO + '?text=' + encodeURIComponent(mensagem);
+    }
+
+    function mostrarMensagemAlmoco(texto) {
+      elementos.lunchModalMessage.textContent = texto;
+      elementos.lunchModalMessage.classList.add('show');
+    }
+    function esconderMensagemAlmoco() {
+      elementos.lunchModalMessage.textContent = '';
+      elementos.lunchModalMessage.classList.remove('show');
+    }
+
+    function abrirModalFinalizacao() {
+      const estado = obterEstadoFinalizacaoRota();
+
+      if (!estado.pronto || requisicaoEmAndamento) {
+        return;
+      }
+
+      elementos.finishModalVehicle.textContent =
+        rotaAtual.veiculoPrincipal ||
+        rotaAtual.veiculoTexto ||
+        'Não informado';
+      elementos.finishModalDriver.textContent =
+        usuarioAtual || rotaAtual.motorista || 'Não informado';
+      elementos.finishModalHelper1.textContent =
+        rotaAtual.ajudante1 || 'Não informado';
+      elementos.finishModalHelper2.textContent =
+        rotaAtual.ajudante2 || 'Não informado';
+      elementos.finishRouteTime.value = horaAtual();
+      elementos.finishRouteKm.value = '';
+      localizacaoPreparada = null;
+      esconderMensagemFinalizacao();
+      definirFinalizacaoCarregando(false);
+      prepararLocalizacao(elementos.finishRouteLocationStatus);
+      elementos.finishRouteModal.classList.remove('hidden');
+
+      setTimeout(function () {
+        elementos.finishRouteKm.focus();
+      }, 120);
+    }
+
+    function fecharModalFinalizacao() {
+      if (
+        requisicaoEmAndamento &&
+        operacaoAtual === 'finalizarPercurso'
+      ) {
+        return;
+      }
+
+      elementos.finishRouteModal.classList.add('hidden');
+      esconderMensagemFinalizacao();
+    }
+
+    function finalizarPercurso(evento) {
+      evento.preventDefault();
+
+      if (requisicaoEmAndamento) {
+        return;
+      }
+
+      const estado = obterEstadoFinalizacaoRota();
+      const hora = elementos.finishRouteTime.value;
+      const km = elementos.finishRouteKm.value.trim();
+
+      esconderMensagemFinalizacao();
+
+      if (!estado.pronto) {
+        mostrarMensagemFinalizacao(
+          'Finalize todas as entregas e o abastecimento antes de encerrar.'
+        );
+        return;
+      }
+
+      if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(hora)) {
+        mostrarMensagemFinalizacao('Informe uma hora válida.');
+        return;
+      }
+
+      if (!km || Number(km) < 0) {
+        mostrarMensagemFinalizacao('Informe o KM de chegada ao CD.');
+        elementos.finishRouteKm.focus();
+        return;
+      }
+
+      const maiorKm = obterMaiorKmRegistrado();
+
+      if (Number.isFinite(maiorKm) && Number(km) < maiorKm) {
+        mostrarMensagemFinalizacao(
+          'O KM final não pode ser menor que o último KM registrado (' +
+          maiorKm +
+          ').'
+        );
+        elementos.finishRouteKm.focus();
+        return;
+      }
+
+      if (!navigator.geolocation) {
+        mostrarMensagemFinalizacao(
+          'Este aparelho não oferece acesso à localização.'
+        );
+        return;
+      }
+
+      definirFinalizacaoCarregando(
+        true,
+        'Confirmando localização...'
+      );
+
+      obterLocalizacaoParaSalvar(
+        elementos.finishRouteLocationStatus,
+        function (coordenadas) {
+          enviarFinalizacaoPercurso(hora, km, coordenadas);
+        },
+        function (erro) {
+          definirFinalizacaoCarregando(false);
+          mostrarMensagemFinalizacao(mensagemErroLocalizacao(erro));
+        }
+      );
+    }
+
+    function obterMaiorKmRegistrado() {
+      const rota = rotaAtual || {};
+      const entregas = Array.isArray(rota.entregas)
+        ? rota.entregas
+        : [];
+      const valores = [
+        rota.percurso ? rota.percurso.km : '',
+        rota.abastecimento && rota.abastecimento.registrado
+          ? rota.abastecimento.kmAbastecimento
+          : ''
+      ];
+
+      entregas.forEach(function (entrega) {
+        valores.push(entrega.kmSaida || '');
+      });
+
+      return valores.reduce(function (maior, valor) {
+        const numero = Number(String(valor || '').replace(',', '.'));
+        return Number.isFinite(numero) && numero > maior
+          ? numero
+          : maior;
+      }, 0);
+    }
+
+    function enviarFinalizacaoPercurso(hora, km, coordenadas) {
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token) {
+        definirFinalizacaoCarregando(false);
+        sair();
+        return;
+      }
+
+      definirFinalizacaoCarregando(true, 'Salvando finalização...');
+
+      enviarOperacao(
+        'finalizarPercurso',
+        {
+          token: token,
+          hora: hora,
+          km: km,
+          latitude: coordenadas.latitude,
+          longitude: coordenadas.longitude,
+          precisao: coordenadas.accuracy
+        }
+      );
+    }
+
+    function tratarCliqueEntrega(evento) {
+      const botao = evento.target.closest('[data-entrega-acao]');
+
+      if (!botao || botao.disabled) {
+        return;
+      }
+
+      const entregaId = botao.getAttribute('data-entrega-id');
+      const acao = botao.getAttribute('data-entrega-acao');
+      const entrega = localizarEntregaAtual(entregaId);
+
+      if (!entrega) {
+        return;
+      }
+
+      abrirModalEntrega(entrega, acao);
+    }
+
+    function localizarEntregaAtual(entregaId) {
+      const entregas = rotaAtual && Array.isArray(rotaAtual.entregas)
+        ? rotaAtual.entregas
+        : [];
+
+      return entregas.find(function (entrega) {
+        return entrega.id === entregaId;
+      }) || null;
+    }
+
+    function abrirModalEntrega(entrega, acao) {
+      if (
+        !rotaAtual ||
+        !rotaAtual.percurso ||
+        !rotaAtual.percurso.iniciado
+      ) {
+        return;
+      }
+
+      entregaSelecionada = entrega;
+      movimentoEntregaAtual = acao === 'saida' ? 'SAIDA' : 'CHEGADA';
+
+      const chegada = movimentoEntregaAtual === 'CHEGADA';
+      const local = [
+        entrega.bairro,
+        entrega.cidade
+      ].filter(Boolean).join(' · ');
+
+      elementos.deliveryModalTitle.textContent = chegada
+        ? 'Início da entrega'
+        : 'Finalizar entrega';
+
+      elementos.deliveryModalSubtitle.textContent = chegada
+        ? 'Informe a hora e o KM de chegada ao cliente.'
+        : 'Informe a hora e o KM de saída do cliente.';
+
+      elementos.deliveryTimeLabel.textContent = chegada
+        ? 'Horário de chegada'
+        : 'Horário de saída';
+
+      elementos.deliveryKmLabel.textContent = chegada
+        ? 'KM de chegada'
+        : 'KM de saída';
+
+      elementos.deliveryModalClient.textContent =
+        entrega.cliente || 'Cliente não informado';
+
+      elementos.deliveryModalDetails.textContent = [
+        'Pedido(s): ' + (entrega.pedidoTexto || 'Sem pedido'),
+        local || 'Local não informado',
+        (entrega.quantidade || '0') + ' volume(s)'
+      ].join(' · ');
+
+      elementos.deliveryTime.value = horaAtual();
+      elementos.deliveryKm.value = chegada
+        ? ''
+        : (entrega.kmChegada || '');
+
+      prepararLocalizacao(elementos.deliveryLocationStatus);
+      resetarChecklistEntrega();
+      elementos.deliveryChecklist.classList.toggle('hidden', chegada);
+
+      if (!chegada) {
+        renderizarMotivosNaoEntrega();
+        preencherChecklistExistente(entrega);
+      }
+
+      esconderMensagemEntrega();
+      definirEntregaCarregando(false);
+      elementos.deliveryModal.classList.remove('hidden');
+
+      setTimeout(function () {
+        elementos.deliveryKm.focus();
+        elementos.deliveryKm.select();
+      }, 120);
+    }
+
+    function fecharModalEntrega() {
+      if (
+        requisicaoEmAndamento &&
+        (operacaoAtual === 'registrarChegada' ||
+         operacaoAtual === 'registrarSaida')
+      ) {
+        return;
+      }
+
+      elementos.deliveryModal.classList.add('hidden');
+      esconderMensagemEntrega();
+      resetarChecklistEntrega();
+      entregaSelecionada = null;
+      movimentoEntregaAtual = '';
+    }
+
+    function tratarCliqueChecklist(evento) {
+      const botaoMotivo = evento.target.closest(
+        '.delivery-reason-option'
+      );
+
+      if (botaoMotivo && !botaoMotivo.disabled) {
+        selecionarMotivoNaoEntrega(
+          botaoMotivo.getAttribute('data-motivo') || ''
+        );
+        return;
+      }
+
+      const botao = evento.target.closest('.checklist-choice');
+
+      if (!botao || botao.disabled) {
+        return;
+      }
+
+      const grupo = botao.closest('[data-checklist-group]');
+
+      if (!grupo) {
+        return;
+      }
+
+      definirEscolhaChecklist(
+        grupo.dataset.checklistGroup,
+        botao.dataset.value
+      );
+    }
+
+    function definirEscolhaChecklist(grupoNome, valor) {
+      const grupo = elementos.deliveryChecklist.querySelector(
+        '[data-checklist-group="' + grupoNome + '"]'
+      );
+
+      if (!grupo) {
+        return;
+      }
+
+      grupo.dataset.selectedValue = valor;
+
+      grupo.querySelectorAll('.checklist-choice').forEach(function (botao) {
+        botao.classList.toggle(
+          'selected',
+          botao.dataset.value === valor
+        );
+      });
+
+      if (grupoNome === 'entregaConcluida') {
+        const concluida = valor === 'Sim';
+
+        elementos.completedDeliveryQuestions.classList.toggle(
+          'hidden',
+          !concluida
+        );
+
+        elementos.nonDeliveryReasonWrap.classList.toggle(
+          'hidden',
+          concluida
+        );
+
+        if (concluida) {
+          limparMotivoNaoEntrega();
+        } else {
+          limparChecklistOperacional();
+        }
+      }
+
+      if (grupoNome === 'teveOcorrencia') {
+        const teveOcorrencia = valor === 'Sim';
+        elementos.proofQuestion.classList.toggle('hidden', !teveOcorrencia);
+
+        if (!teveOcorrencia) {
+          limparEscolhaChecklist('descritoComprovante');
+          elementos.driverDescriptionWrap.classList.add('hidden');
+          elementos.driverDescription.value = '';
+          atualizarContadorDescricao();
+        }
+      }
+
+      if (grupoNome === 'descritoComprovante') {
+        const precisaDescrever = valor === 'Não';
+        elementos.driverDescriptionWrap.classList.toggle(
+          'hidden',
+          !precisaDescrever
+        );
+
+        if (!precisaDescrever) {
+          elementos.driverDescription.value = '';
+          atualizarContadorDescricao();
+        } else {
+          setTimeout(function () {
+            elementos.driverDescription.focus();
+          }, 80);
+        }
+      }
+    }
+
+    function limparEscolhaChecklist(grupoNome) {
+      const grupo = elementos.deliveryChecklist.querySelector(
+        '[data-checklist-group="' + grupoNome + '"]'
+      );
+
+      if (!grupo) {
+        return;
+      }
+
+      grupo.dataset.selectedValue = '';
+      grupo.querySelectorAll('.checklist-choice').forEach(function (botao) {
+        botao.classList.remove('selected');
+      });
+    }
+
+    function limparChecklistOperacional() {
+      limparEscolhaChecklist('produtosMontados');
+      limparEscolhaChecklist('teveOcorrencia');
+      limparEscolhaChecklist('descritoComprovante');
+      elementos.proofQuestion.classList.add('hidden');
+      elementos.driverDescriptionWrap.classList.add('hidden');
+      elementos.driverDescription.value = '';
+      atualizarContadorDescricao();
+    }
+
+    function resetarChecklistEntrega() {
+      limparEscolhaChecklist('entregaConcluida');
+      limparChecklistOperacional();
+      limparMotivoNaoEntrega();
+      elementos.completedDeliveryQuestions.classList.add('hidden');
+      elementos.nonDeliveryReasonWrap.classList.add('hidden');
+    }
+
+    function renderizarMotivosNaoEntrega() {
+      const motivos = rotaAtual && Array.isArray(rotaAtual.motivosNaoEntrega)
+        ? rotaAtual.motivosNaoEntrega
+        : [];
+
+      elementos.nonDeliveryReasonList.innerHTML = '';
+      elementos.nonDeliveryReasonList.dataset.selectedValue = '';
+
+      if (!motivos.length) {
+        const aviso = document.createElement('div');
+        aviso.className = 'delivery-reason-empty';
+        aviso.textContent =
+          'Nenhum motivo foi cadastrado na aba Tabela, coluna H.';
+        elementos.nonDeliveryReasonList.appendChild(aviso);
+        return;
+      }
+
+      motivos.forEach(function (motivo) {
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.className = 'delivery-reason-option';
+        botao.setAttribute('data-motivo', motivo);
+        botao.textContent = motivo;
+        elementos.nonDeliveryReasonList.appendChild(botao);
+      });
+    }
+
+    function selecionarMotivoNaoEntrega(motivo) {
+      elementos.nonDeliveryReasonList.dataset.selectedValue = motivo;
+
+      elementos.nonDeliveryReasonList
+        .querySelectorAll('.delivery-reason-option')
+        .forEach(function (botao) {
+          botao.classList.toggle(
+            'selected',
+            botao.getAttribute('data-motivo') === motivo
+          );
+        });
+    }
+
+    function limparMotivoNaoEntrega() {
+      elementos.nonDeliveryReasonList.dataset.selectedValue = '';
+
+      elementos.nonDeliveryReasonList
+        .querySelectorAll('.delivery-reason-option')
+        .forEach(function (botao) {
+          botao.classList.remove('selected');
+        });
+    }
+
+    function preencherChecklistExistente(entrega) {
+      if (entrega.entregaConcluida) {
+        definirEscolhaChecklist(
+          'entregaConcluida',
+          entrega.entregaConcluida
+        );
+      }
+
+      if (
+        entrega.entregaConcluida === 'Não' &&
+        entrega.motivoEntregaConcluida
+      ) {
+        selecionarMotivoNaoEntrega(
+          entrega.motivoEntregaConcluida
+        );
+        return;
+      }
+
+      if (entrega.produtosMontados) {
+        definirEscolhaChecklist('produtosMontados', entrega.produtosMontados);
+      }
+
+      if (entrega.teveOcorrencia) {
+        definirEscolhaChecklist('teveOcorrencia', entrega.teveOcorrencia);
+      }
+
+      if (entrega.descritoComprovante) {
+        definirEscolhaChecklist(
+          'descritoComprovante',
+          entrega.descritoComprovante
+        );
+      }
+
+      if (entrega.descricaoMotorista) {
+        elementos.driverDescription.value = entrega.descricaoMotorista;
+        elementos.driverDescriptionWrap.classList.remove('hidden');
+        atualizarContadorDescricao();
+      }
+    }
+
+    function obterValorChecklist(grupoNome) {
+      const grupo = elementos.deliveryChecklist.querySelector(
+        '[data-checklist-group="' + grupoNome + '"]'
+      );
+
+      return grupo ? (grupo.dataset.selectedValue || '') : '';
+    }
+
+    function obterChecklistFinalizacao() {
+      return {
+        entregaConcluida: obterValorChecklist('entregaConcluida'),
+        motivoEntregaConcluida:
+          elementos.nonDeliveryReasonList.dataset.selectedValue || '',
+        produtosMontados: obterValorChecklist('produtosMontados'),
+        teveOcorrencia: obterValorChecklist('teveOcorrencia'),
+        descritoComprovante: obterValorChecklist('descritoComprovante'),
+        descricaoMotorista: elementos.driverDescription.value.trim()
+      };
+    }
+
+    function validarChecklistFinalizacao(checklist) {
+      if (!checklist.entregaConcluida) {
+        return 'Informe se a entrega foi concluída.';
+      }
+
+      if (checklist.entregaConcluida === 'Não') {
+        if (!checklist.motivoEntregaConcluida) {
+          return 'Selecione o motivo da não entrega.';
+        }
+
+        return '';
+      }
+
+      if (!checklist.produtosMontados) {
+        return 'Informe se os produtos ficaram desembalados/montados.';
+      }
+
+      if (!checklist.teveOcorrencia) {
+        return 'Informe se houve alguma ocorrência na entrega.';
+      }
+
+      if (
+        checklist.teveOcorrencia === 'Sim' &&
+        !checklist.descritoComprovante
+      ) {
+        return 'Informe se a ocorrência está descrita no comprovante.';
+      }
+
+      if (
+        checklist.teveOcorrencia === 'Sim' &&
+        checklist.descritoComprovante === 'Não' &&
+        !checklist.descricaoMotorista
+      ) {
+        return 'Descreva o que aconteceu antes de finalizar.';
+      }
+
+      return '';
+    }
+
+    function atualizarContadorDescricao() {
+      elementos.descriptionCounter.textContent =
+        elementos.driverDescription.value.length + '/1000';
+    }
+
+    function registrarMovimentoEntrega(evento) {
+      evento.preventDefault();
+
+      if (requisicaoEmAndamento || !entregaSelecionada) {
+        return;
+      }
+
+      const hora = elementos.deliveryTime.value;
+      const km = elementos.deliveryKm.value.trim();
+      const checklist = movimentoEntregaAtual === 'SAIDA'
+        ? obterChecklistFinalizacao()
+        : null;
+
+      esconderMensagemEntrega();
+
+      if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(hora)) {
+        mostrarMensagemEntrega('Informe uma hora válida.');
+        return;
+      }
+
+      if (!km || Number(km) < 0) {
+        mostrarMensagemEntrega('Informe o KM do veículo.');
+        elementos.deliveryKm.focus();
+        return;
+      }
+
+      if (movimentoEntregaAtual === 'SAIDA') {
+        const erroChecklist = validarChecklistFinalizacao(checklist);
+
+        if (erroChecklist) {
+          mostrarMensagemEntrega(erroChecklist);
+          return;
+        }
+      }
+
+      if (!navigator.geolocation) {
+        mostrarMensagemEntrega(
+          'Este aparelho não oferece acesso à localização.'
+        );
+        return;
+      }
+
+      definirEntregaCarregando(true, 'Confirmando localização...');
+
+      obterLocalizacaoParaSalvar(
+        elementos.deliveryLocationStatus,
+        function (coordenadas) {
+          enviarMovimentoEntrega(
+            hora,
+            km,
+            coordenadas,
+            checklist
+          );
+        },
+        function (erro) {
+          definirEntregaCarregando(false);
+          mostrarMensagemEntrega(mensagemErroLocalizacao(erro));
+        }
+      );
+    }
+
+    async function enviarMovimentoEntrega(
+      hora,
+      km,
+      coordenadas,
+      checklist
+    ) {
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token || !entregaSelecionada) {
+        definirEntregaCarregando(false);
+        sair();
+        return;
+      }
+
+      definirEntregaCarregando(true, 'Salvando registro...');
+
+      await enviarOperacao(
+        movimentoEntregaAtual === 'CHEGADA'
+          ? 'registrarChegada'
+          : 'registrarSaida',
+        {
+          token: token,
+          entregaId: entregaSelecionada.id,
+          hora: hora,
+          km: km,
+          latitude: coordenadas.latitude,
+          longitude: coordenadas.longitude,
+          precisao: coordenadas.accuracy,
+          entregaConcluida:
+            checklist ? checklist.entregaConcluida : '',
+          motivoEntregaConcluida:
+            checklist ? checklist.motivoEntregaConcluida : '',
+          produtosMontados:
+            checklist ? checklist.produtosMontados : '',
+          teveOcorrencia:
+            checklist ? checklist.teveOcorrencia : '',
+          descritoComprovante:
+            checklist ? checklist.descritoComprovante : '',
+          descricaoMotorista:
+            checklist ? checklist.descricaoMotorista : ''
+        }
+      );
+    }
+
+    function enviarOperacao(acao, dados) {
+      requestIdAtual = gerarRequestId();
+      operacaoAtual = acao;
+      operacaoIniciadaEm = Date.now();
+      requisicaoEmAndamento = true;
+
+      const corpo = new URLSearchParams();
+      corpo.set('acao', acao);
+      corpo.set('requestId', requestIdAtual);
+      corpo.set('transporte', 'iframe');
+
+      Object.entries(dados || {}).forEach(function ([chave, valor]) {
+        corpo.set(chave, String(valor == null ? '' : valor));
+      });
+
+      try {
+        enviarPostPorIframe(corpo);
+
+        // Segurança: caso o navegador bloqueie a mensagem direta,
+        // a consulta pelo cache continua funcionando como alternativa.
+        agendarConsulta(700);
+      } catch (erro) {
+        tratarFalhaEnvio(acao);
+      }
+    }
+
+    function enviarPostPorIframe(corpo) {
+      limparTransportePost();
+
+      const nomeIframe = 'clamilog_post_' + requestIdAtual;
+      const iframe = document.createElement('iframe');
+      iframe.name = nomeIframe;
+      iframe.id = nomeIframe;
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.style.display = 'none';
+
+      const formulario = document.createElement('form');
+      formulario.method = 'POST';
+      formulario.action = URL_APPS_SCRIPT;
+      formulario.target = nomeIframe;
+      formulario.style.display = 'none';
+
+      corpo.forEach(function (valor, chave) {
+        const campo = document.createElement('input');
+        campo.type = 'hidden';
+        campo.name = chave;
+        campo.value = valor;
+        formulario.appendChild(campo);
+      });
+
+      iframePostAtual = iframe;
+      formularioPostAtual = formulario;
+      document.body.appendChild(iframe);
+      document.body.appendChild(formulario);
+      formulario.submit();
+
+      setTimeout(function () {
+        if (formulario.parentNode) {
+          formulario.remove();
+        }
+        if (formularioPostAtual === formulario) {
+          formularioPostAtual = null;
+        }
+      }, 0);
+    }
+
+    function receberResultadoPostDireto(evento) {
+      const resposta = evento ? evento.data : null;
+      processarResultadoOperacao(resposta);
+    }
+
+    function tratarFalhaEnvio(operacao) {
+      encerrarOperacao();
+
+      if (operacao === 'login') {
+        definirLoginCarregando(false);
+        mostrarMensagem(
+          'Não foi possível enviar o login. Verifique sua conexão.',
+          'error'
+        );
+      } else if (operacao === 'iniciarPercurso') {
+        definirInicioCarregando(false);
+        mostrarMensagemModal(
+          'Não foi possível enviar o início do percurso.'
+        );
+      } else if (operacao === 'finalizarPercurso') {
+        definirFinalizacaoCarregando(false);
+        mostrarMensagemFinalizacao(
+          'Não foi possível enviar a finalização do dia.'
+        );
+      } else if (operacao === 'definirAbastecimentoHoje') {
+        definirDecisaoAbastecimentoCarregando(false);
+        mostrarMensagemDecisaoAbastecimento(
+          'Não foi possível salvar a opção de abastecimento.'
+        );
+      } else if (operacao === 'registrarAbastecimento') {
+        definirAbastecimentoCarregando(false);
+        mostrarMensagemAbastecimento(
+          'Não foi possível salvar o abastecimento.'
+        );
+      } else if (operacao === 'registrarAlmoco') {
+        definirAlmocoCarregando(false);
+        mostrarMensagemAlmoco('Não foi possível salvar o almoço.');
+      } else {
+        definirEntregaCarregando(false);
+        mostrarMensagemEntrega(
+          'Não foi possível salvar o registro da entrega.'
+        );
+      }
+    }
+
+    function agendarConsulta(atraso) {
+      limparTemporizador();
+
+      temporizadorConsulta = setTimeout(
+        consultarResultado,
+        atraso
+      );
+    }
+
+    function consultarResultado() {
+      if (!requestIdAtual) {
+        return;
+      }
+
+      if (Date.now() - operacaoIniciadaEm > TEMPO_LIMITE) {
+        const operacao = operacaoAtual;
+        encerrarOperacao();
+
+        if (operacao === 'login') {
+          definirLoginCarregando(false);
+          mostrarMensagem(
+            'O servidor não devolveu o resultado. Confira a implantação do Apps Script.',
+            'error'
+          );
+        } else if (operacao === 'iniciarPercurso') {
+          definirInicioCarregando(false);
+          mostrarMensagemModal(
+            'O servidor demorou para salvar. Tente novamente.'
+          );
+        } else if (operacao === 'finalizarPercurso') {
+          definirFinalizacaoCarregando(false);
+          mostrarMensagemFinalizacao(
+            'O servidor demorou para salvar. Tente novamente.'
+          );
+        } else if (operacao === 'definirAbastecimentoHoje') {
+          definirDecisaoAbastecimentoCarregando(false);
+          mostrarMensagemDecisaoAbastecimento(
+            'O servidor demorou para salvar. Tente novamente.'
+          );
+        } else if (operacao === 'registrarAbastecimento') {
+          definirAbastecimentoCarregando(false);
+          mostrarMensagemAbastecimento(
+            'O servidor demorou para salvar. Tente novamente.'
+          );
+        } else if (operacao === 'registrarAlmoco') {
+          definirAlmocoCarregando(false);
+          mostrarMensagemAlmoco('O servidor demorou para salvar. Tente novamente.');
+        } else {
+          definirEntregaCarregando(false);
+          mostrarMensagemEntrega(
+            'O servidor demorou para salvar. Tente novamente.'
+          );
+        }
+
+        return;
+      }
+
+      carregarJsonp(
+        {
+          acao: 'resultado',
+          requestId: requestIdAtual,
+          callback: CALLBACK_RESULTADO,
+          _: Date.now().toString()
+        },
+        function () {
+          if (requisicaoEmAndamento) {
+            agendarConsulta(INTERVALO_CONSULTA);
+          }
+        }
+      );
+    }
+
+    window.clamilogReceberResultado = function (resposta) {
+      processarResultadoOperacao(resposta);
+    };
+
+    function processarResultadoOperacao(resposta) {
+      if (
+        !resposta ||
+        resposta.origem !== 'CLAMILOG_BACKEND' ||
+        resposta.requestId !== requestIdAtual ||
+        !resposta.pronto
+      ) {
+        return;
+      }
+
+      const operacao = operacaoAtual;
+      encerrarOperacao();
+
+      if (operacao === 'login') {
+        tratarResultadoLogin(resposta);
+        return;
+      }
+
+      if (operacao === 'iniciarPercurso') {
+        tratarResultadoInicio(resposta);
+        return;
+      }
+
+      if (operacao === 'finalizarPercurso') {
+        tratarResultadoFinalizacao(resposta);
+        return;
+      }
+
+      if (operacao === 'definirAbastecimentoHoje') {
+        tratarResultadoDecisaoAbastecimento(resposta);
+        return;
+      }
+
+      if (operacao === 'registrarAbastecimento') {
+        tratarResultadoAbastecimento(resposta);
+        return;
+      }
+
+      if (operacao === 'registrarAlmoco') {
+        tratarResultadoAlmoco(resposta);
+        return;
+      }
+
+      if (
+        operacao === 'registrarChegada' ||
+        operacao === 'registrarSaida'
+      ) {
+        tratarResultadoMovimentoEntrega(resposta);
+      }
+    }
+
+    function tratarResultadoLogin(resposta) {
+      definirLoginCarregando(false);
+
+      if (!resposta.ok) {
+        elementos.senha.value = '';
+
+        mostrarMensagem(
+          resposta.mensagem || 'Usuário ou senha incorretos.',
+          'error'
+        );
+
+        elementos.senha.focus();
+        return;
+      }
+
+      const token = resposta.token || '';
+
+      sessionStorage.setItem('clamilog_token', token);
+      salvarUsuarioLembrado(resposta.usuario);
+      usuarioAtual = resposta.usuario || '';
+      elementos.senha.value = '';
+      mostrarTela('loading');
+      carregarSessao(token);
+    }
+
+    function tratarResultadoInicio(resposta) {
+      definirInicioCarregando(false);
+
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') {
+          fecharModalInicio();
+          sair();
+          return;
+        }
+
+        mostrarMensagemModal(
+          resposta.mensagem ||
+          'Não foi possível iniciar o percurso.'
+        );
+
+        return;
+      }
+
+      fecharModalInicio();
+
+      if (rotaAtual) {
+        rotaAtual.percurso =
+          resposta.percurso || resposta.registro || {};
+        rotaAtual.abastecimento =
+          resposta.abastecimento || rotaAtual.abastecimento || {};
+        rotaAtual.finalizacao = rotaAtual.finalizacao || {
+          finalizado: false
+        };
+      }
+
+      renderizarRota(
+        resposta.usuario || usuarioAtual,
+        rotaAtual || {}
+      );
+
+      if (!resposta.duplicado) {
+        setTimeout(function () {
+          abrirResumoNoWhatsApp();
+        }, 120);
+      }
+    }
+
+    function tratarResultadoFinalizacao(resposta) {
+      definirFinalizacaoCarregando(false);
+
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') {
+          elementos.finishRouteModal.classList.add('hidden');
+          sair();
+          return;
+        }
+
+        mostrarMensagemFinalizacao(
+          resposta.mensagem ||
+          'Não foi possível salvar a finalização do dia.'
+        );
+        return;
+      }
+
+      elementos.finishRouteModal.classList.add('hidden');
+      esconderMensagemFinalizacao();
+
+      if (rotaAtual) {
+        rotaAtual.finalizacao =
+          resposta.finalizacao || resposta.registro || {
+            finalizado: true
+          };
+        renderizarRota(resposta.usuario || usuarioAtual, rotaAtual);
+      }
+    }
+
+    function tratarResultadoDecisaoAbastecimento(resposta) {
+      definirDecisaoAbastecimentoCarregando(false);
+
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') {
+          elementos.fuelDecisionModal.classList.add('hidden');
+          sair();
+          return;
+        }
+
+        mostrarMensagemDecisaoAbastecimento(
+          resposta.mensagem ||
+          'Não foi possível salvar a opção de abastecimento.'
+        );
+        return;
+      }
+
+      elementos.fuelDecisionModal.classList.add('hidden');
+      esconderMensagemDecisaoAbastecimento();
+
+      if (rotaAtual) {
+        rotaAtual.abastecimento = resposta.abastecimento || {};
+        renderizarRota(resposta.usuario || usuarioAtual, rotaAtual);
+      }
+
+      setTimeout(function () {
+        abrirResumoNoWhatsApp();
+      }, 120);
+    }
+
+    function tratarResultadoAbastecimento(resposta) {
+      definirAbastecimentoCarregando(false);
+
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') {
+          elementos.fuelModal.classList.add('hidden');
+          sair();
+          return;
+        }
+
+        mostrarMensagemAbastecimento(
+          resposta.mensagem ||
+          'Não foi possível salvar o abastecimento.'
+        );
+        return;
+      }
+
+      elementos.fuelModal.classList.add('hidden');
+      esconderMensagemAbastecimento();
+
+      if (rotaAtual) {
+        rotaAtual.abastecimento =
+          resposta.abastecimento || rotaAtual.abastecimento || {};
+        renderizarRota(resposta.usuario || usuarioAtual, rotaAtual);
+      }
+    }
+
+    function tratarResultadoAlmoco(resposta) {
+      definirAlmocoCarregando(false);
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') { fecharModalAlmoco(); sair(); return; }
+        mostrarMensagemAlmoco(resposta.mensagem || 'Não foi possível salvar o almoço.');
+        return;
+      }
+      elementos.lunchModal.classList.add('hidden');
+      esconderMensagemAlmoco();
+      if (rotaAtual) rotaAtual.almoco = resposta.almoco || resposta.registro || { registrado: true };
+      renderizarRota(resposta.usuario || usuarioAtual, rotaAtual || {});
+      if (!resposta.duplicado) setTimeout(function () { abrirWhatsAppAlmoco(resposta.registro || resposta.almoco || {}); }, 120);
+    }
+
+    function tratarResultadoMovimentoEntrega(resposta) {
+      definirEntregaCarregando(false);
+
+      if (!resposta.ok) {
+        if (resposta.codigo === 'SESSAO_EXPIRADA') {
+          elementos.deliveryModal.classList.add('hidden');
+          sair();
+          return;
+        }
+
+        mostrarMensagemEntrega(
+          resposta.mensagem ||
+          'Não foi possível salvar o registro da entrega.'
+        );
+
+        return;
+      }
+
+      const movimento = resposta.movimento || movimentoEntregaAtual;
+      const entregaId = resposta.entrega && resposta.entrega.id
+        ? resposta.entrega.id
+        : (entregaSelecionada ? entregaSelecionada.id : '');
+
+      elementos.deliveryModal.classList.add('hidden');
+      esconderMensagemEntrega();
+      entregaSelecionada = null;
+      movimentoEntregaAtual = '';
+
+      if (
+        rotaAtual &&
+        resposta.entrega &&
+        Array.isArray(rotaAtual.entregas)
+      ) {
+        const indiceEntrega = rotaAtual.entregas.findIndex(
+          function (item) {
+            return item.id === resposta.entrega.id;
+          }
+        );
+
+        if (indiceEntrega >= 0) {
+          rotaAtual.entregas[indiceEntrega] = resposta.entrega;
+        }
+      }
+
+      renderizarRota(
+        resposta.usuario || usuarioAtual,
+        rotaAtual || {}
+      );
+
+      if (!resposta.duplicado) {
+        setTimeout(function () {
+          abrirWhatsAppMovimentoEntrega(
+            movimento,
+            entregaId,
+            resposta.registro || {}
+          );
+        }, 120);
+      }
+    }
+
+    function atualizarRoteiroNaTela() {
+      const token = sessionStorage.getItem('clamilog_token');
+
+      if (!token || elementos.refreshRouteButton.disabled) {
+        return;
+      }
+
+      elementos.refreshRouteButton.disabled = true;
+      elementos.refreshRouteButtonText.textContent = 'Atualizando roteiro...';
+      elementos.refreshRouteMessage.textContent =
+        'Buscando alterações e novos pedidos.';
+
+      carregarJsonp(
+        {
+          acao: 'sessao',
+          token: token,
+          callback: CALLBACK_ATUALIZACAO,
+          _: Date.now().toString()
+        },
+        function () {
+          setTimeout(function () {
+            if (elementos.refreshRouteButton.disabled) {
+              finalizarAtualizacaoRoteiro(
+                'Não foi possível confirmar a atualização. Tente novamente.'
+              );
+            }
+          }, 15000);
+        }
+      );
+    }
+
+    window.clamilogReceberAtualizacao = function (resposta) {
+      if (!resposta || resposta.origem !== 'CLAMILOG_BACKEND') {
+        finalizarAtualizacaoRoteiro(
+          'Resposta inválida ao atualizar o roteiro.'
+        );
+        return;
+      }
+
+      if (!resposta.ok) {
+        finalizarAtualizacaoRoteiro(
+          'Não foi possível atualizar o roteiro. Entre novamente.'
+        );
+        return;
+      }
+
+      usuarioAtual = resposta.usuario || usuarioAtual;
+      renderizarRota(usuarioAtual, resposta.rota || {});
+      carregarComplementoRota(
+        sessionStorage.getItem('clamilog_token')
+      );
+      finalizarAtualizacaoRoteiro('Roteiro atualizado com sucesso.');
+    };
+
+    function finalizarAtualizacaoRoteiro(mensagem) {
+      elementos.refreshRouteButton.disabled = false;
+      elementos.refreshRouteButtonText.textContent = 'Atualizar roteiro';
+      elementos.refreshRouteMessage.textContent = mensagem || '';
+
+      if (mensagem) {
+        setTimeout(function () {
+          if (elementos.refreshRouteMessage.textContent === mensagem) {
+            elementos.refreshRouteMessage.textContent = '';
+          }
+        }, 5000);
+      }
+    }
+
+    function carregarSessao(token) {
+      carregarJsonp(
+        {
+          acao: 'sessao',
+          token: token,
+          callback: CALLBACK_SESSAO,
+          _: Date.now().toString()
+        },
+        function () {
+          setTimeout(function () {
+            if (!elementos.loadingScreen.classList.contains('hidden')) {
+              sessionStorage.removeItem('clamilog_token');
+              mostrarTela('login');
+            }
+          }, 15000);
+        }
+      );
+    }
+
+    window.clamilogReceberSessao = function (resposta) {
+      if (!resposta || resposta.origem !== 'CLAMILOG_BACKEND') {
+        return;
+      }
+
+      if (!resposta.ok) {
+        sessionStorage.removeItem('clamilog_token');
+        mostrarTela('login');
+        return;
+      }
+
+      abrirRota(resposta);
+    };
+
+    function abrirRota(dados) {
+      elementos.senha.value = '';
+      finalizarAtualizacaoRoteiro('');
+      usuarioAtual = dados.usuario || '';
+      renderizarRota(usuarioAtual, dados.rota || {});
+      mostrarTela('route');
+
+      // KM, abastecimento e motivos são carregados depois que a rota
+      // já apareceu, evitando prender o motorista na tela de espera.
+      carregarComplementoRota(
+        dados.token || sessionStorage.getItem('clamilog_token')
+      );
+    }
+
+    function carregarComplementoRota(token) {
+      if (!token) {
+        return;
+      }
+
+      carregarJsonp(
+        {
+          acao: 'complementoRota',
+          token: token,
+          callback: CALLBACK_COMPLEMENTO,
+          _: Date.now().toString()
+        },
+        function () {
+          // A rota principal permanece utilizável mesmo se esta
+          // consulta secundária falhar temporariamente.
+        }
+      );
+    }
+
+    window.clamilogReceberComplementoRota = function (resposta) {
+      if (
+        !resposta ||
+        resposta.origem !== 'CLAMILOG_BACKEND' ||
+        !resposta.ok ||
+        !rotaAtual
+      ) {
+        return;
+      }
+
+      rotaAtual.percurso = resposta.percurso || rotaAtual.percurso;
+      rotaAtual.finalizacao =
+        resposta.finalizacao || rotaAtual.finalizacao;
+      rotaAtual.abastecimento =
+        resposta.abastecimento || rotaAtual.abastecimento;
+      rotaAtual.almoco = resposta.almoco || rotaAtual.almoco || { registrado: false };
+      rotaAtual.motivosNaoEntrega = Array.isArray(
+        resposta.motivosNaoEntrega
+      ) ? resposta.motivosNaoEntrega : [];
+
+      renderizarRota(usuarioAtual, rotaAtual);
+      verificarPerguntaAbastecimento();
+    };
+
+    function renderizarRota(usuario, rota) {
+      usuarioAtual = usuario || usuarioAtual || 'Motorista';
+      rotaAtual = rota || {};
+
+      const percurso = rotaAtual.percurso || {
+        iniciado: false
+      };
+
+      const percursoIniciado = Boolean(percurso.iniciado);
+      const diaFinalizado = Boolean(
+        rotaAtual.finalizacao && rotaAtual.finalizacao.finalizado
+      );
+
+      elementos.routeUser.textContent = usuarioAtual;
+
+      elementos.routeDate.textContent =
+        rotaAtual.dataExtenso ||
+        rotaAtual.data ||
+        'Hoje';
+
+      elementos.routeVehicle.textContent =
+        rotaAtual.veiculoTexto ||
+        'Não informado';
+
+      elementos.routeHelpers.textContent =
+        rotaAtual.ajudantesTexto
+          ? 'Equipe: ' + rotaAtual.ajudantesTexto
+          : 'Equipe não informada';
+
+      elementos.summaryStops.textContent =
+        rotaAtual.quantidadeParadas || 0;
+
+      elementos.summaryOrders.textContent =
+        rotaAtual.quantidadePedidos || 0;
+
+      elementos.summaryItems.textContent =
+        rotaAtual.quantidadeItens || 0;
+
+      elementos.routeCountText.textContent =
+        pluralizar(
+          rotaAtual.quantidadeParadas || 0,
+          'parada',
+          'paradas'
+        );
+
+      elementos.routeStatus.textContent = diaFinalizado
+        ? 'Finalizada'
+        : percursoIniciado
+          ? 'Em rota'
+          : 'Programada';
+
+      elementos.startRouteCard.classList.toggle(
+        'hidden',
+        !rotaAtual.encontrado || percursoIniciado
+      );
+
+      elementos.startedRouteCard.classList.toggle(
+        'hidden',
+        !percursoIniciado
+      );
+
+      if (percursoIniciado) {
+        elementos.startedRouteTitle.textContent =
+          'Saída registrada para ' +
+          (percurso.veiculo || rotaAtual.veiculoPrincipal || 'o veículo');
+
+        elementos.startedRouteTime.textContent =
+          'Hora: ' + (percurso.hora || '—');
+
+        elementos.startedRouteKm.textContent =
+          'KM: ' + (percurso.km || '—');
+
+        elementos.startedRouteLocation.textContent =
+          percurso.precisao
+            ? 'GPS ± ' + percurso.precisao + ' m'
+            : 'Localização registrada';
+      }
+
+      renderizarCartaoAbastecimento(
+        rotaAtual.abastecimento || {},
+        percursoIniciado
+      );
+      renderizarCartaoAlmoco(percursoIniciado);
+
+      const entregas = Array.isArray(rotaAtual.entregas)
+        ? rotaAtual.entregas
+        : [];
+
+      renderizarCartaoFinalizacao(percursoIniciado);
+      elementos.deliveryList.innerHTML = '';
+
+      if (!entregas.length) {
+        elementos.emptyState.classList.remove('hidden');
+        elementos.startRouteCard.classList.add('hidden');
+        return;
+      }
+
+      elementos.emptyState.classList.add('hidden');
+
+      entregas.forEach(function (entrega) {
+        elementos.deliveryList.appendChild(
+          criarCartaoEntrega(
+            entrega,
+            percursoIniciado
+          )
+        );
+      });
+    }
+
+
+    function renderizarCartaoAbastecimento(
+      abastecimento,
+      percursoIniciado
+    ) {
+      const mostrar = Boolean(
+        percursoIniciado &&
+        abastecimento &&
+        abastecimento.planejado
+      );
+
+      elementos.fuelCard.classList.toggle('show', mostrar);
+
+      if (!mostrar) {
+        elementos.fuelCard.classList.remove('pending', 'done');
+        return;
+      }
+
+      const registrado = Boolean(abastecimento.registrado);
+      elementos.fuelCard.classList.toggle('pending', !registrado);
+      elementos.fuelCard.classList.toggle('done', registrado);
+      elementos.fuelCardIcon.textContent = registrado ? '✓' : '⛽';
+      elementos.fuelCardStatus.textContent = registrado
+        ? 'Abastecimento registrado'
+        : 'Abastecimento previsto';
+      elementos.fuelCardTitle.textContent = registrado
+        ? 'Dados do posto salvos'
+        : 'Aguardando abastecimento';
+      elementos.fuelCardDescription.textContent = registrado
+        ? (
+            'KM ' + (abastecimento.kmAbastecimento || '—') +
+            ' · ' + (abastecimento.qtsLitros || '—') + ' litros'
+          )
+        : 'Ao chegar ao posto, registre o KM e a quantidade de litros.';
+      elementos.fuelCardVehicle.textContent =
+        abastecimento.placa ||
+        rotaAtual.veiculoPrincipal ||
+        'Não informado';
+      elementos.fuelCardDriver.textContent =
+        abastecimento.motorista || usuarioAtual;
+      elementos.fuelCardButton.disabled = registrado;
+      elementos.fuelCardButton.textContent = registrado
+        ? 'Abastecimento concluído'
+        : 'Registrar abastecimento';
+    }
+
+    function renderizarCartaoFinalizacao(percursoIniciado) {
+      const estado = obterEstadoFinalizacaoRota();
+      const finalizacao = rotaAtual && rotaAtual.finalizacao
+        ? rotaAtual.finalizacao
+        : {};
+      const mostrar = Boolean(
+        rotaAtual &&
+        rotaAtual.encontrado &&
+        Array.isArray(rotaAtual.entregas) &&
+        rotaAtual.entregas.length
+      );
+
+      elementos.finalRouteCard.classList.toggle('hidden', !mostrar);
+
+      if (!mostrar) {
+        return;
+      }
+
+      elementos.finalRouteCard.classList.toggle(
+        'ready',
+        estado.pronto
+      );
+      elementos.finalRouteCard.classList.toggle(
+        'done',
+        estado.finalizado
+      );
+
+      if (estado.finalizado) {
+        elementos.finalRouteIcon.textContent = '✓';
+        elementos.finalRouteStatus.textContent = 'Dia finalizado';
+        elementos.finalRouteTitle.textContent =
+          'Chegada ao CD registrada';
+        elementos.finalRouteDescription.textContent =
+          'O KM final e a localização foram salvos na aba Km.';
+        elementos.finalRouteTime.textContent =
+          finalizacao.hora || '—';
+        elementos.finalRouteKm.textContent =
+          finalizacao.km || '—';
+        elementos.finishRouteButton.disabled = true;
+        elementos.finishRouteButton.textContent = 'Finalização concluída';
+        return;
+      }
+
+      elementos.finalRouteIcon.textContent = estado.pronto ? '🏁' : '🔒';
+      elementos.finalRouteStatus.textContent = 'Finalização do dia';
+      elementos.finalRouteTime.textContent = '—';
+      elementos.finalRouteKm.textContent = '—';
+      elementos.finishRouteButton.disabled = !estado.pronto;
+      elementos.finishRouteButton.textContent = 'Finalização';
+
+      if (!percursoIniciado) {
+        elementos.finalRouteTitle.textContent =
+          'Aguardando início do percurso';
+        elementos.finalRouteDescription.textContent =
+          'Registre o KM inicial para começar o dia.';
+        return;
+      }
+
+      if (estado.pendentes > 0) {
+        elementos.finalRouteTitle.textContent =
+          'Ainda há entregas pendentes';
+        elementos.finalRouteDescription.textContent =
+          'Finalize ' +
+          pluralizar(estado.pendentes, 'entrega', 'entregas') +
+          ' antes de encerrar o dia.';
+        return;
+      }
+
+      if (estado.abastecimentoPendente) {
+        elementos.finalRouteTitle.textContent =
+          'Abastecimento ainda pendente';
+        elementos.finalRouteDescription.textContent =
+          'Registre o KM e os litros abastecidos para liberar a finalização.';
+        return;
+      }
+
+      elementos.finalRouteTitle.textContent =
+        'Tudo concluído';
+      elementos.finalRouteDescription.textContent =
+        'Ao chegar ao CD, registre o horário e o KM final.';
+    }
+
+    function criarCartaoEntrega(entrega, percursoIniciado) {
+      const artigo = document.createElement('article');
+      artigo.className = 'delivery-card';
+
+      const local = [
+        entrega.bairro,
+        entrega.cidade
+      ].filter(Boolean).join(' · ');
+
+      const chegadaRegistrada = Boolean(entrega.inicioRegistrado);
+      const entregaFinalizada = Boolean(entrega.finalizada);
+
+      let classeStatus = 'waiting';
+      let tituloStatus = 'Aguardando chegada';
+      let detalheStatus = 'Chegada ainda não registrada';
+
+      if (chegadaRegistrada && !entregaFinalizada) {
+        classeStatus = 'active';
+        tituloStatus = 'Em atendimento';
+        detalheStatus =
+          'Chegada ' + (entrega.horarioChegada || '—') +
+          ' · KM ' + (entrega.kmChegada || '—');
+      }
+
+      if (entregaFinalizada) {
+        const naoConcluida = entrega.entregaConcluida === 'Não';
+        classeStatus = naoConcluida ? 'failed' : 'done';
+        tituloStatus = naoConcluida
+          ? 'Entrega não concluída'
+          : 'Entrega concluída';
+        detalheStatus = naoConcluida
+          ? (entrega.motivoEntregaConcluida || 'Motivo não informado')
+          : (
+              'Saída ' + (entrega.horarioSaida || '—') +
+              ' · KM ' + (entrega.kmSaida || '—')
+            );
+      }
+
+      const bloquearChegada =
+        !percursoIniciado ||
+        chegadaRegistrada ||
+        entregaFinalizada;
+
+      const bloquearSaida =
+        !percursoIniciado ||
+        !chegadaRegistrada ||
+        entregaFinalizada;
+
+      artigo.innerHTML = `
+        <div class="delivery-top">
+          <div class="sequence">${escaparHtml(entrega.sequencia)}</div>
+
+          <div class="delivery-title">
+            <h3>${escaparHtml(entrega.cliente)}</h3>
+            <div class="delivery-place">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" stroke="currentColor" stroke-width="1.7"/>
+                <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.7"/>
+              </svg>
+              <span>${escaparHtml(local || 'Local não informado')}</span>
+            </div>
+          </div>
+
+          <span class="quantity-badge">
+            ${escaparHtml(entrega.quantidade)} vol.
+          </span>
+        </div>
+
+        <div class="delivery-details">
+          <div class="detail-row">
+            <span>Pedido(s)</span>
+            <strong>${escaparHtml(entrega.pedidoTexto)}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Serviço</span>
+            <strong>${escaparHtml([entrega.origemTexto, entrega.tipoTexto].filter(Boolean).join(' / ') || 'Não informado')}</strong>
+          </div>
+
+        </div>
+
+        ${entrega.icamentoTexto ? `
+          <div class="delivery-extra-info">
+            Içamento: ${escaparHtml(entrega.icamentoTexto)}${entrega.qtsItensIcamentoTexto ? ` (${escaparHtml(entrega.qtsItensIcamentoTexto)})` : ''}
+          </div>
+        ` : ''}
+
+        ${entrega.horarioTexto ? `
+          <div class="delivery-observation">
+            Obs: ${escaparHtml(entrega.horarioTexto)}
+          </div>
+        ` : ''}
+
+        <div class="delivery-status-box ${classeStatus}">
+          <strong>${tituloStatus}</strong>
+          <span>${detalheStatus}</span>
+        </div>
+
+        <div class="delivery-actions-grid">
+          <button
+            class="delivery-operation-button arrival"
+            type="button"
+            data-entrega-acao="chegada"
+            data-entrega-id="${escaparHtml(entrega.id)}"
+            ${bloquearChegada ? 'disabled' : ''}
+          >
+            ${chegadaRegistrada ? 'Chegada registrada' : 'Início Entrega'}
+          </button>
+
+          <button
+            class="delivery-operation-button finish"
+            type="button"
+            data-entrega-acao="saida"
+            data-entrega-id="${escaparHtml(entrega.id)}"
+            ${bloquearSaida ? 'disabled' : ''}
+          >
+            ${entregaFinalizada
+              ? ((entrega.tipoTexto || 'Entrega') + ' finalizada')
+              : ('Finalizar ' + (entrega.tipoTexto || 'Entrega'))}
+          </button>
+        </div>
+      `;
+
+      return artigo;
+    }
+
+    function abrirResumoNoWhatsApp() {
+      if (
+        !rotaAtual ||
+        !rotaAtual.percurso ||
+        !rotaAtual.percurso.iniciado
+      ) {
+        return;
+      }
+
+      const mensagem = montarMensagemWhatsApp();
+      const url =
+        'https://wa.me/' +
+        WHATSAPP_DESTINO +
+        '?text=' +
+        encodeURIComponent(mensagem);
+
+      window.location.href = url;
+    }
+
+    function abrirWhatsAppMovimentoEntrega(
+      movimento,
+      entregaId,
+      registro
+    ) {
+      const entrega = localizarEntregaAtual(entregaId);
+
+      if (!entrega) {
+        return;
+      }
+
+      const mensagem = montarMensagemMovimentoEntrega(
+        movimento,
+        entrega,
+        registro
+      );
+
+      const url =
+        'https://wa.me/' +
+        WHATSAPP_DESTINO +
+        '?text=' +
+        encodeURIComponent(mensagem);
+
+      window.location.href = url;
+    }
+
+    function montarMensagemMovimentoEntrega(
+      movimento,
+      entrega,
+      registro
+    ) {
+      const rota = rotaAtual || {};
+      const chegada = movimento === 'CHEGADA';
+      const local = [
+        entrega.bairro,
+        entrega.cidade
+      ].filter(Boolean).join(' — ');
+
+      const hora = registro.hora || (
+        chegada
+          ? entrega.horarioChegada
+          : entrega.horarioSaida
+      ) || 'Não informado';
+
+      const km = registro.km || (
+        chegada
+          ? entrega.kmChegada
+          : entrega.kmSaida
+      ) || 'Não informado';
+
+      const localizacao = registro.localizacao || (
+        chegada
+          ? entrega.localizacaoChegada
+          : entrega.localizacaoSaida
+      ) || '';
+
+      const entregaConcluida =
+        registro.entregaConcluida ||
+        entrega.entregaConcluida ||
+        '';
+
+      const motivoEntregaConcluida =
+        registro.motivoEntregaConcluida ||
+        entrega.motivoEntregaConcluida ||
+        '';
+
+      const linhas = [
+        chegada
+          ? '📍 *CHEGADA NO CLIENTE — CLAMILOG*'
+          : entregaConcluida === 'Não'
+            ? '❌ *ENTREGA NÃO CONCLUÍDA — CLAMILOG*'
+            : '✅ *ENTREGA FINALIZADA — CLAMILOG*',
+        '',
+        '*Data:* ' + (rota.data || 'Hoje'),
+        '*Motorista:* ' + (rota.motorista || usuarioAtual || 'Não informado'),
+        '*Veículo:* ' + (
+          entrega.veiculo ||
+          rota.veiculoPrincipal ||
+          rota.veiculoTexto ||
+          'Não informado'
+        ),
+        '*Cliente:* ' + (entrega.cliente || 'Não informado'),
+        '*Pedido(s):* ' + (entrega.pedidoTexto || 'Sem pedido'),
+        '*Serviço:* ' + (entrega.tipoTexto || 'Não informado'),
+        '*Local:* ' + (local || 'Não informado'),
+        '*Volumes:* ' + (entrega.quantidade || '0'),
+        '*Parada:* ' +
+          (entrega.sequencia || '—') +
+          ' de ' +
+          (rota.quantidadeParadas || '—'),
+        '',
+        chegada
+          ? '*Horário de chegada:* ' + hora
+          : '*Horário de saída:* ' + hora,
+        chegada
+          ? '*KM de chegada:* ' + km
+          : '*KM de saída:* ' + km
+      ];
+
+      if (!chegada && entrega.horarioChegada) {
+        linhas.push(
+          '*Chegada registrada:* ' +
+          entrega.horarioChegada +
+          ' · KM ' +
+          (entrega.kmChegada || '—')
+        );
+
+        linhas.push(
+          '',
+          '*Checklist da entrega*',
+          '*Entrega concluída:* ' +
+            (entregaConcluida || 'Não informado')
+        );
+
+        if (entregaConcluida === 'Não') {
+          linhas.push(
+            '*Motivo da não entrega:* ' +
+              (motivoEntregaConcluida || 'Não informado')
+          );
+        } else {
+          const produtosMontados =
+            registro.produtosMontados ||
+            entrega.produtosMontados ||
+            'Não informado';
+
+          const teveOcorrencia =
+            registro.teveOcorrencia ||
+            entrega.teveOcorrencia ||
+            'Não informado';
+
+          linhas.push(
+            '*Produtos ficaram montados:* ' + produtosMontados,
+            '*Teve ocorrência:* ' + teveOcorrencia
+          );
+
+          if (teveOcorrencia === 'Sim') {
+            const descritoComprovante =
+              registro.descritoComprovante ||
+              entrega.descritoComprovante ||
+              'Não informado';
+
+            linhas.push(
+              '*Descrito no comprovante:* ' + descritoComprovante
+            );
+
+            const descricaoMotorista =
+              registro.descricaoMotorista ||
+              entrega.descricaoMotorista ||
+              '';
+
+            if (descricaoMotorista) {
+              linhas.push(
+                '',
+                '*Descrição do motorista:*',
+                descricaoMotorista
+              );
+            }
+          }
+        }
+      }
+
+      if (localizacao) {
+        linhas.push('*Localização:* ' + localizacao);
+      }
+
+      return linhas.join('\n');
+    }
+
+    function montarMensagemWhatsApp() {
+      const rota = rotaAtual || {};
+      const percurso = rota.percurso || {};
+      const entregas = Array.isArray(rota.entregas)
+        ? rota.entregas
+        : [];
+
+      const ajudante1 =
+        percurso.ajudante1 ||
+        rota.ajudante1 ||
+        'Não informado';
+
+      const ajudante2 =
+        percurso.ajudante2 ||
+        rota.ajudante2 ||
+        'Não informado';
+
+      const linhas = [
+        '🚚 *INÍCIO DE PERCURSO — CLAMILOG*',
+        '',
+        '*Data:* ' + (percurso.data || rota.data || 'Hoje'),
+        '*Horário de saída:* ' + (percurso.hora || 'Não informado'),
+        '*Motorista:* ' + (
+          percurso.motorista ||
+          rota.motorista ||
+          usuarioAtual ||
+          'Não informado'
+        ),
+        '*Veículo:* ' + (
+          percurso.veiculo ||
+          rota.veiculoPrincipal ||
+          rota.veiculoTexto ||
+          'Não informado'
+        ),
+        '*Ajudante 1:* ' + ajudante1,
+        '*Ajudante 2:* ' + ajudante2,
+        '*KM inicial:* ' + (percurso.km || 'Não informado'),
+        '',
+        '*Resumo da rota*',
+        '• ' + pluralizar(
+          Number(rota.quantidadeParadas || 0),
+          'parada',
+          'paradas'
+        ),
+        '• ' + pluralizar(
+          Number(rota.quantidadePedidos || 0),
+          'pedido',
+          'pedidos'
+        ),
+        '• ' + pluralizar(
+          Number(
+            String(rota.quantidadeItens || 0)
+              .replace(',', '.')
+          ),
+          'volume',
+          'volumes'
+        )
+      ];
+
+      if (entregas.length) {
+        linhas.push('', '*Entregas do dia*');
+
+        entregas.forEach(function (entrega, indice) {
+          const local = [
+            entrega.bairro,
+            entrega.cidade
+          ].filter(Boolean).join(' - ');
+
+          let linha =
+            (indice + 1) +
+            '. ' +
+            (entrega.cliente || 'Cliente não informado') +
+            ' — ' +
+            (entrega.quantidade || '0') +
+            ' vol.';
+
+          if (local) {
+            linha += ' — ' + local;
+          }
+
+          linhas.push(linha);
+        });
+      }
+
+      return linhas.join('\n');
+    }
+
+    function carregarJsonp(parametros, aoTerminar) {
+      const script = document.createElement('script');
+      const busca = new URLSearchParams(parametros);
+
+      script.src = URL_APPS_SCRIPT + '?' + busca.toString();
+      script.async = true;
+
+      script.onerror = function () {
+        script.remove();
+        if (typeof aoTerminar === 'function') aoTerminar();
+      };
+
+      script.onload = function () {
+        script.remove();
+        if (typeof aoTerminar === 'function') aoTerminar();
+      };
+
+      document.body.appendChild(script);
+    }
+
+    function mostrarTela(tela) {
+      elementos.loginScreen.classList.toggle(
+        'hidden',
+        tela !== 'login'
+      );
+
+      elementos.loadingScreen.classList.toggle(
+        'hidden',
+        tela !== 'loading'
+      );
+
+      elementos.routeScreen.classList.toggle(
+        'hidden',
+        tela !== 'route'
+      );
+    }
+
+    function encerrarOperacao() {
+      limparTemporizador();
+      limparTransportePost();
+      requestIdAtual = null;
+      operacaoAtual = null;
+      operacaoIniciadaEm = 0;
+      requisicaoEmAndamento = false;
+    }
+
+    function limparTemporizador() {
+      if (temporizadorConsulta) {
+        clearTimeout(temporizadorConsulta);
+        temporizadorConsulta = null;
+      }
+    }
+
+    function limparTransportePost() {
+      if (formularioPostAtual && formularioPostAtual.parentNode) {
+        formularioPostAtual.remove();
+      }
+
+      if (iframePostAtual && iframePostAtual.parentNode) {
+        iframePostAtual.remove();
+      }
+
+      formularioPostAtual = null;
+      iframePostAtual = null;
+    }
+
+    function definirLoginCarregando(carregando) {
+      elementos.loginButton.disabled = carregando;
+      elementos.usuario.disabled = carregando;
+      elementos.senha.disabled = carregando;
+
+      elementos.loginButtonText.innerHTML = carregando
+        ? 'Validando acesso <span class="spinner"></span>'
+        : 'Acessar minha rota';
+    }
+
+    function definirInicioCarregando(
+      carregando,
+      texto = 'Localizar e iniciar'
+    ) {
+      elementos.confirmStartButton.disabled = carregando;
+      elementos.cancelStartButton.disabled = carregando;
+      elementos.closeStartModal.disabled = carregando;
+      elementos.startTime.disabled = carregando;
+      elementos.startKm.disabled = carregando;
+      elementos.startFuelYes.disabled = carregando;
+      elementos.startFuelNo.disabled = carregando;
+
+      elementos.confirmStartButtonText.innerHTML = carregando
+        ? escaparHtml(texto) + ' <span class="spinner"></span>'
+        : 'Localizar e iniciar';
+    }
+
+
+    function definirDecisaoAbastecimentoCarregando(carregando) {
+      elementos.fuelDecisionYes.disabled = carregando;
+      elementos.fuelDecisionNo.disabled = carregando;
+
+      elementos.fuelDecisionYes.textContent = carregando
+        ? 'Salvando...'
+        : 'Sim';
+
+      elementos.fuelDecisionNo.textContent = carregando
+        ? 'Salvando...'
+        : 'Não';
+    }
+
+    function definirAbastecimentoCarregando(carregando) {
+      elementos.confirmFuelButton.disabled = carregando;
+      elementos.cancelFuelButton.disabled = carregando;
+      elementos.closeFuelModal.disabled = carregando;
+      elementos.fuelKm.disabled = carregando;
+      elementos.fuelLiters.disabled = carregando;
+
+      elementos.confirmFuelButtonText.innerHTML = carregando
+        ? 'Salvando <span class="spinner"></span>'
+        : 'Salvar abastecimento';
+    }
+
+    function definirAlmocoCarregando(carregando, texto = 'Localizar e salvar') {
+      elementos.confirmLunchButton.disabled = carregando;
+      elementos.cancelLunchButton.disabled = carregando;
+      elementos.closeLunchModal.disabled = carregando;
+      elementos.lunchStartTime.disabled = carregando;
+      elementos.lunchEndTime.disabled = carregando;
+      elementos.lunchKm.disabled = carregando;
+      elementos.confirmLunchButtonText.innerHTML = carregando
+        ? escaparHtml(texto) + ' <span class="spinner"></span>'
+        : 'Localizar e salvar';
+    }
+
+    function definirFinalizacaoCarregando(
+      carregando,
+      texto = 'Localizar e finalizar'
+    ) {
+      elementos.confirmFinishRouteButton.disabled = carregando;
+      elementos.cancelFinishRouteButton.disabled = carregando;
+      elementos.closeFinishRouteModal.disabled = carregando;
+      elementos.finishRouteTime.disabled = carregando;
+      elementos.finishRouteKm.disabled = carregando;
+
+      elementos.confirmFinishRouteButtonText.innerHTML = carregando
+        ? escaparHtml(texto) + ' <span class="spinner"></span>'
+        : 'Localizar e finalizar';
+    }
+
+    function definirEntregaCarregando(
+      carregando,
+      texto = 'Localizar e salvar'
+    ) {
+      elementos.confirmDeliveryButton.disabled = carregando;
+      elementos.cancelDeliveryButton.disabled = carregando;
+      elementos.closeDeliveryModal.disabled = carregando;
+      elementos.deliveryTime.disabled = carregando;
+      elementos.deliveryKm.disabled = carregando;
+      elementos.driverDescription.disabled = carregando;
+
+      elementos.deliveryChecklist
+        .querySelectorAll('.checklist-choice, .delivery-reason-option')
+        .forEach(function (botao) {
+          botao.disabled = carregando;
+        });
+
+      elementos.confirmDeliveryButtonText.innerHTML = carregando
+        ? escaparHtml(texto) + ' <span class="spinner"></span>'
+        : 'Localizar e salvar';
+    }
+
+    function sair() {
+      sessionStorage.removeItem('clamilog_token');
+      encerrarOperacao();
+      definirLoginCarregando(false);
+      definirInicioCarregando(false);
+      definirDecisaoAbastecimentoCarregando(false);
+      definirAbastecimentoCarregando(false);
+      definirAlmocoCarregando(false);
+      definirFinalizacaoCarregando(false);
+      definirEntregaCarregando(false);
+
+      usuarioAtual = '';
+      rotaAtual = null;
+      entregaSelecionada = null;
+      movimentoEntregaAtual = '';
+      abastecimentoHojeSelecionado = '';
+
+      elementos.senha.value = '';
+      elementos.deliveryList.innerHTML = '';
+      elementos.startModal.classList.add('hidden');
+      elementos.fuelDecisionModal.classList.add('hidden');
+      elementos.fuelModal.classList.add('hidden');
+      elementos.lunchModal.classList.add('hidden');
+      elementos.finishRouteModal.classList.add('hidden');
+      elementos.deliveryModal.classList.add('hidden');
+      elementos.fuelCard.classList.remove('show', 'pending', 'done');
+      elementos.finalRouteCard.classList.add('hidden');
+
+      mostrarTela('login');
+      elementos.usuario.focus();
+    }
+
+    function alternarSenha() {
+      const mostrar = elementos.senha.type === 'password';
+
+      elementos.senha.type = mostrar ? 'text' : 'password';
+
+      elementos.eyeButton.setAttribute(
+        'aria-label',
+        mostrar ? 'Ocultar senha' : 'Mostrar senha'
+      );
+    }
+
+    function salvarUsuarioLembrado(usuario) {
+      if (elementos.lembrar.checked) {
+        localStorage.setItem('clamilog_usuario', usuario);
+      } else {
+        localStorage.removeItem('clamilog_usuario');
+      }
+    }
+
+    function restaurarUsuario() {
+      const usuario = localStorage.getItem('clamilog_usuario');
+
+      if (usuario) {
+        elementos.usuario.value = usuario;
+        elementos.lembrar.checked = true;
+      }
+    }
+
+    function horaAtual() {
+      const agora = new Date();
+      const horas = String(agora.getHours()).padStart(2, '0');
+      const minutos = String(agora.getMinutes()).padStart(2, '0');
+
+      return horas + ':' + minutos;
+    }
+
+    function mensagemErroLocalizacao(erro) {
+      if (!erro) {
+        return 'Não foi possível obter a localização.';
+      }
+
+      if (erro.code === 1) {
+        return (
+          'A localização foi negada. Libere a permissão de localização ' +
+          'para este site e tente novamente.'
+        );
+      }
+
+      if (erro.code === 2) {
+        return (
+          'O celular não conseguiu determinar a localização. ' +
+          'Ative o GPS e tente novamente.'
+        );
+      }
+
+      if (erro.code === 3) {
+        return (
+          'A localização demorou para responder. ' +
+          'Vá para um local com melhor sinal e tente novamente.'
+        );
+      }
+
+      return 'Não foi possível obter a localização atual.';
+    }
+
+    function gerarRequestId() {
+      if (
+        window.crypto &&
+        typeof window.crypto.randomUUID === 'function'
+      ) {
+        return window.crypto.randomUUID().replace(/-/g, '');
+      }
+
+      return (
+        Date.now().toString(36) +
+        Math.random().toString(36).slice(2) +
+        Math.random().toString(36).slice(2)
+      );
+    }
+
+    function pluralizar(numero, singular, plural) {
+      return numero + ' ' + (numero === 1 ? singular : plural);
+    }
+
+    function escaparHtml(valor) {
+      return String(valor == null ? '' : valor)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function mostrarMensagem(texto, tipo) {
+      elementos.message.textContent = texto;
+      elementos.message.className = 'message show ' + tipo;
+    }
+
+    function esconderMensagem() {
+      elementos.message.className = 'message';
+      elementos.message.textContent = '';
+    }
+
+    function mostrarMensagemModal(texto) {
+      elementos.startModalMessage.textContent = texto;
+      elementos.startModalMessage.classList.add('show');
+    }
+
+    function esconderMensagemModal() {
+      elementos.startModalMessage.textContent = '';
+      elementos.startModalMessage.classList.remove('show');
+    }
+
+
+    function mostrarMensagemDecisaoAbastecimento(texto) {
+      elementos.fuelDecisionMessage.textContent = texto;
+      elementos.fuelDecisionMessage.classList.add('show');
+    }
+
+    function esconderMensagemDecisaoAbastecimento() {
+      elementos.fuelDecisionMessage.textContent = '';
+      elementos.fuelDecisionMessage.classList.remove('show');
+    }
+
+    function mostrarMensagemAbastecimento(texto) {
+      elementos.fuelModalMessage.textContent = texto;
+      elementos.fuelModalMessage.classList.add('show');
+    }
+
+    function esconderMensagemAbastecimento() {
+      elementos.fuelModalMessage.textContent = '';
+      elementos.fuelModalMessage.classList.remove('show');
+    }
+
+    function mostrarMensagemFinalizacao(texto) {
+      elementos.finishRouteModalMessage.textContent = texto;
+      elementos.finishRouteModalMessage.classList.add('show');
+    }
+
+    function esconderMensagemFinalizacao() {
+      elementos.finishRouteModalMessage.textContent = '';
+      elementos.finishRouteModalMessage.classList.remove('show');
+    }
+
+    function mostrarMensagemEntrega(texto) {
+      elementos.deliveryModalMessage.textContent = texto;
+      elementos.deliveryModalMessage.classList.add('show');
+    }
+
+    function esconderMensagemEntrega() {
+      elementos.deliveryModalMessage.textContent = '';
+      elementos.deliveryModalMessage.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
